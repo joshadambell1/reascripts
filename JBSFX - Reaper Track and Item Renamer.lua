@@ -72,6 +72,7 @@ local last_track_count = 0
 local auto_refresh = true
 local enable_item_renaming = true
 local enable_track_renaming = false
+local enable_numbering = false -- Numbering disabled by default
 local numbering_separator = 0  -- 0 = space, 1 = underscore, 2 = hyphen
 local numbering_padding = 1    -- 0 = none, 1 = one zero, 2 = two zeros, 3 = three zeros
 local numbering_start = 1      -- Starting number (1-99)
@@ -290,32 +291,34 @@ function UpdatePreview()
                 new_name = prefix_text .. new_name .. suffix_text
             end
             
-            -- Show what it would look like with numbering applied
-            local current_number = 0
-            local should_add_number = false
-            
-            if item_data.type == "item" and enable_item_renaming and item_data.take then
-                current_number = item_number
-                item_number = item_number + 1
-                should_add_number = true
-            elseif item_data.type == "track" and enable_track_renaming and item_data.track then
-                current_number = track_number
-                track_number = track_number + 1
-                should_add_number = true
-            end
-            
-            if should_add_number then
-                -- Format number with padding for preview
-                local number_str = tostring(current_number)
-                if numbering_padding == 1 then
-                    number_str = string.format("%02d", current_number)
-                elseif numbering_padding == 2 then
-                    number_str = string.format("%03d", current_number)
-                elseif numbering_padding == 3 then
-                    number_str = string.format("%04d", current_number)
+            -- Show what it would look like with numbering applied (if enabled)
+            if enable_numbering then
+                local current_number = 0
+                local should_add_number = false
+                
+                if item_data.type == "item" and enable_item_renaming and item_data.take then
+                    current_number = item_number
+                    item_number = item_number + 1
+                    should_add_number = true
+                elseif item_data.type == "track" and enable_track_renaming and item_data.track then
+                    current_number = track_number
+                    track_number = track_number + 1
+                    should_add_number = true
                 end
                 
-                new_name = new_name .. separator .. number_str
+                if should_add_number then
+                    -- Format number with padding for preview
+                    local number_str = tostring(current_number)
+                    if numbering_padding == 1 then
+                        number_str = string.format("%02d", current_number)
+                    elseif numbering_padding == 2 then
+                        number_str = string.format("%03d", current_number)
+                    elseif numbering_padding == 3 then
+                        number_str = string.format("%04d", current_number)
+                    end
+                    
+                    new_name = new_name .. separator .. number_str
+                end
             end
             
             item_data.new_name = new_name
@@ -745,42 +748,51 @@ function Loop()
         -- Numbering section
         ImGui.Text(ctx, '-- Numbering --')
         
-        ImGui.Text(ctx, 'Separator:')
-        ImGui.SameLine(ctx)
-        local separator_labels = {'Space', 'Underscore', 'Hyphen'}
-        for i = 0, 2 do
-            local is_selected = (numbering_separator == i)
-            if ImGui.RadioButton(ctx, separator_labels[i + 1], is_selected) then
-                numbering_separator = i
-                UpdatePreview()
-            end
-            if i < 2 then ImGui.SameLine(ctx) end
-        end
-        
-        ImGui.Text(ctx, 'Zero Padding:')
-        ImGui.SameLine(ctx)
-        local padding_labels = {'None', 'One', 'Two', 'Three'}
-        for i = 0, 3 do
-            local is_selected = (numbering_padding == i)
-            if ImGui.RadioButton(ctx, padding_labels[i + 1], is_selected) then
-                numbering_padding = i
-                UpdatePreview()
-            end
-            if i < 3 then ImGui.SameLine(ctx) end
-        end
-        
-        ImGui.Text(ctx, 'Starting Number:')
-        ImGui.SameLine(ctx)
-        ImGui.PushItemWidth(ctx, 100)
-        local start_changed, new_start = ImGui.InputInt(ctx, '##numbering_start', numbering_start)
-        ImGui.PopItemWidth(ctx)
-        if start_changed then
-            numbering_start = math.max(1, math.min(99, new_start)) -- Clamp between 1 and 99
+        local numbering_changed, new_numbering = ImGui.Checkbox(ctx, 'Enable Numbering', enable_numbering)
+        if numbering_changed then
+            enable_numbering = new_numbering
             UpdatePreview()
         end
-        ImGui.SameLine(ctx)
-        if ImGui.Button(ctx, 'Add Numbering') then
-            ApplyNumbering()
+        
+        -- Only show numbering options if enabled
+        if enable_numbering then
+            ImGui.Text(ctx, 'Separator:')
+            ImGui.SameLine(ctx)
+            local separator_labels = {'Space', 'Underscore', 'Hyphen'}
+            for i = 0, 2 do
+                local is_selected = (numbering_separator == i)
+                if ImGui.RadioButton(ctx, separator_labels[i + 1], is_selected) then
+                    numbering_separator = i
+                    UpdatePreview()
+                end
+                if i < 2 then ImGui.SameLine(ctx) end
+            end
+            
+            ImGui.Text(ctx, 'Zero Padding:')
+            ImGui.SameLine(ctx)
+            local padding_labels = {'None', 'One', 'Two', 'Three'}
+            for i = 0, 3 do
+                local is_selected = (numbering_padding == i)
+                if ImGui.RadioButton(ctx, padding_labels[i + 1], is_selected) then
+                    numbering_padding = i
+                    UpdatePreview()
+                end
+                if i < 3 then ImGui.SameLine(ctx) end
+            end
+            
+            ImGui.Text(ctx, 'Starting Number:')
+            ImGui.SameLine(ctx)
+            ImGui.PushItemWidth(ctx, 100)
+            local start_changed, new_start = ImGui.InputInt(ctx, '##numbering_start', numbering_start)
+            ImGui.PopItemWidth(ctx)
+            if start_changed then
+                numbering_start = math.max(1, math.min(99, new_start)) -- Clamp between 1 and 99
+                UpdatePreview()
+            end
+            ImGui.SameLine(ctx)
+            if ImGui.Button(ctx, 'Add Numbering') then
+                ApplyNumbering()
+            end
         end
         
         ImGui.Separator(ctx)
