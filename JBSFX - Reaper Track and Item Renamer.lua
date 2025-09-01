@@ -4,17 +4,24 @@ JBSFX REAPER ITEM & TRACK RENAMER
 ================================================================================
 
 A comprehensive batch renaming tool for REAPER items and tracks with a clean 
-GUI interface.
+GUI interface. 
 
 FEATURES:
 - Find & Replace: Search and replace text with options for first/last/all instances
 - Prefix & Suffix: Quickly add text to the beginning or end of names
 - Character Removal: Remove X characters from start or Y characters from end
+- Auto Numbering: Add sequential numbers with customizable format and padding
 - Live Preview: See exactly what your changes will look like before applying
 - Selective Renaming: Choose to work with items only, tracks only, or both
 - Auto-refresh: Automatically updates when you change selection (optional)
 - Flexible Search: Case sensitive/insensitive options
 - Undo Support: All operations are properly undoable
+
+NUMBERING OPTIONS:
+- Separator: Choose between space, underscore, or hyphen
+- Zero Padding: None (1), one zero (01), two zeros (001), or three zeros (0001)
+- Starting Number: Begin numbering from any number between 1-99
+- Independent Sequences: Items and tracks are numbered separately
 
 HOW TO USE:
 1. Select items and/or tracks in REAPER
@@ -24,8 +31,14 @@ HOW TO USE:
    - Find & Replace for text substitution
    - Prefix/Suffix for adding text to start/end
    - Character removal for trimming names
-5. Check the live preview to see your changes
+   - Numbering for sequential organization
+5. Watch the live preview update as you make changes
 6. Click the appropriate action button to apply changes
+
+EXAMPLE WORKFLOW:
+- Original names: "Guitar.wav", "Bass.wav", "Track 1", "Track 2"
+- Add prefix "SONG_", remove ".wav", add numbering with underscore and padding
+- Result: "SONG_Guitar_01", "SONG_Bass_02", "SONG_Track 1_01", "SONG_Track 2_02"
 
 REQUIREMENTS:
 - REAPER (any recent version)
@@ -34,7 +47,6 @@ REQUIREMENTS:
 INSTALLATION:
 1. Install ReaImGui via ReaPack if you haven't already
 2. Load this script in REAPER's Actions menu
-3. Optionally assign a keyboard shortcut for quick access
 
 ================================================================================
 --]]
@@ -60,6 +72,9 @@ local last_track_count = 0
 local auto_refresh = true
 local enable_item_renaming = true
 local enable_track_renaming = false
+local numbering_separator = 0  -- 0 = space, 1 = underscore, 2 = hyphen
+local numbering_padding = 1    -- 0 = none, 1 = one zero, 2 = two zeros, 3 = three zeros
+local numbering_start = 1      -- Starting number (1-99)
 
 -- Initialize the script
 function Init()
@@ -232,6 +247,14 @@ end
 
 -- Update preview with find/replace results
 function UpdatePreview()
+    -- Get separator character for numbering preview
+    local separators = {" ", "_", "-"}
+    local separator = separators[numbering_separator + 1]
+    
+    -- Count items and tracks separately for numbering preview
+    local item_number = numbering_start
+    local track_number = numbering_start
+    
     for i, item_data in ipairs(preview_items) do
         -- Skip items with no take and tracks with empty names for processing
         if (item_data.type == "item" and item_data.take == nil and item_data.original_name == "[No active take]") then
@@ -265,6 +288,34 @@ function UpdatePreview()
             -- Show what it would look like with prefix/suffix applied to the result
             if prefix_text ~= "" or suffix_text ~= "" then
                 new_name = prefix_text .. new_name .. suffix_text
+            end
+            
+            -- Show what it would look like with numbering applied
+            local current_number = 0
+            local should_add_number = false
+            
+            if item_data.type == "item" and enable_item_renaming and item_data.take then
+                current_number = item_number
+                item_number = item_number + 1
+                should_add_number = true
+            elseif item_data.type == "track" and enable_track_renaming and item_data.track then
+                current_number = track_number
+                track_number = track_number + 1
+                should_add_number = true
+            end
+            
+            if should_add_number then
+                -- Format number with padding for preview
+                local number_str = tostring(current_number)
+                if numbering_padding == 1 then
+                    number_str = string.format("%02d", current_number)
+                elseif numbering_padding == 2 then
+                    number_str = string.format("%03d", current_number)
+                elseif numbering_padding == 3 then
+                    number_str = string.format("%04d", current_number)
+                end
+                
+                new_name = new_name .. separator .. number_str
             end
             
             item_data.new_name = new_name
@@ -476,6 +527,72 @@ function PerformFindReplace()
     RefreshPreview()
 end
 
+-- Apply numbering to items and tracks
+function ApplyNumbering()
+    local total_count = #preview_items
+    local changed_count = 0
+    
+    if total_count == 0 then
+        status_message = "No items or tracks to process!"
+        return
+    end
+    
+    reaper.Undo_BeginBlock()
+    
+    -- Get separator character
+    local separators = {" ", "_", "-"}
+    local separator = separators[numbering_separator + 1]
+    
+    -- Count items and tracks separately for numbering
+    local item_number = numbering_start
+    local track_number = numbering_start
+    
+    for i, item_data in ipairs(preview_items) do
+        local current_number = 0
+        local should_process = false
+        
+        if item_data.type == "item" and enable_item_renaming and item_data.take then
+            current_number = item_number
+            item_number = item_number + 1
+            should_process = true
+        elseif item_data.type == "track" and enable_track_renaming and item_data.track then
+            current_number = track_number
+            track_number = track_number + 1
+            should_process = true
+        end
+        
+        if should_process then
+            -- Format number with padding
+            local number_str = tostring(current_number)
+            if numbering_padding == 1 then
+                number_str = string.format("%02d", current_number)
+            elseif numbering_padding == 2 then
+                number_str = string.format("%03d", current_number)
+            elseif numbering_padding == 3 then
+                number_str = string.format("%04d", current_number)
+            end
+            
+            local new_name = item_data.original_name .. separator .. number_str
+            
+            if item_data.type == "item" then
+                reaper.GetSetMediaItemTakeInfo_String(item_data.take, "P_NAME", new_name, true)
+            else -- track
+                reaper.GetSetMediaTrackInfo_String(item_data.track, "P_NAME", new_name, true)
+            end
+            
+            changed_count = changed_count + 1
+        end
+    end
+    
+    reaper.Undo_EndBlock("Add numbering to item and track names", -1)
+    reaper.UpdateArrange()
+    
+    status_message = string.format("Added numbering to %d out of %d items/tracks", changed_count, total_count)
+    
+    -- Refresh items after changes to show updated names
+    RefreshPreview()
+end
+
 -- Main GUI loop
 function Loop()
     -- Check if selection has changed and auto-refresh (if enabled)
@@ -621,6 +738,49 @@ function Loop()
         ImGui.SameLine(ctx)
         if ImGui.Button(ctx, 'Remove from End') then
             RemoveFromEnd()
+        end
+        
+        ImGui.Separator(ctx)
+        
+        -- Numbering section
+        ImGui.Text(ctx, '-- Numbering --')
+        
+        ImGui.Text(ctx, 'Separator:')
+        ImGui.SameLine(ctx)
+        local separator_labels = {'Space', 'Underscore', 'Hyphen'}
+        for i = 0, 2 do
+            local is_selected = (numbering_separator == i)
+            if ImGui.RadioButton(ctx, separator_labels[i + 1], is_selected) then
+                numbering_separator = i
+                UpdatePreview()
+            end
+            if i < 2 then ImGui.SameLine(ctx) end
+        end
+        
+        ImGui.Text(ctx, 'Zero Padding:')
+        ImGui.SameLine(ctx)
+        local padding_labels = {'None', 'One', 'Two', 'Three'}
+        for i = 0, 3 do
+            local is_selected = (numbering_padding == i)
+            if ImGui.RadioButton(ctx, padding_labels[i + 1], is_selected) then
+                numbering_padding = i
+                UpdatePreview()
+            end
+            if i < 3 then ImGui.SameLine(ctx) end
+        end
+        
+        ImGui.Text(ctx, 'Starting Number:')
+        ImGui.SameLine(ctx)
+        ImGui.PushItemWidth(ctx, 100)
+        local start_changed, new_start = ImGui.InputInt(ctx, '##numbering_start', numbering_start)
+        ImGui.PopItemWidth(ctx)
+        if start_changed then
+            numbering_start = math.max(1, math.min(99, new_start)) -- Clamp between 1 and 99
+            UpdatePreview()
+        end
+        ImGui.SameLine(ctx)
+        if ImGui.Button(ctx, 'Add Numbering') then
+            ApplyNumbering()
         end
         
         ImGui.Separator(ctx)
