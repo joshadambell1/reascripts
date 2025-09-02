@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="JBSFX Scripts">
+<index version="1" name="JBSFX - Scripts">
   <category name="Spotting">
     <reapack name="JBSFX - Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection).lua" type="script" desc="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection)">
       <metadata>
         <description><![CDATA[Takes the last played file from Media Explorer, trims to time selection, places it on the selected track, and renders it through track/take FX. Only the selected portion is processed and preserved.]]></description>
       </metadata>
+      <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="JBSFX" time="2025-09-02T00:00:00Z">
-        <source main="main">Spotting/JBSFX - Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection).lua</source>
+        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Spotting/JBSFX%20-%20Spot%20Media%20Explorer%20Selection%20Through%20Selected%20Track%20and%20Bake%20FX%20into%20Item%20(only%20bakes%20time%20selection).lua</source>
       </version>
     </reapack>
     <reapack name="JBSFX - Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file).lua" type="script" desc="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file)">
       <metadata>
         <description><![CDATA[Takes the last played file from Media Explorer, places it on the selected track, renders it through track/take FX, and trims the result to match Media Explorer time selection.]]></description>
       </metadata>
+      <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="JBSFX" time="2025-09-02T00:00:00Z">
-        <source main="main">Spotting/JBSFX - Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file).lua</source>
+        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Spotting/JBSFX%20-%20Spot%20Media%20Explorer%20Selection%20Through%20Selected%20Track%20and%20Bake%20FX%20into%20Item%20(bakes%20whole%20file).lua</source>
       </version>
     </reapack>
   </category>
@@ -23,10 +25,10 @@
       <metadata>
         <description><![CDATA[A comprehensive batch renaming tool for REAPER items and tracks with a clean GUI interface. Features Find & Replace functionality with options for first/last/all instances.]]></description>
       </metadata>
+      <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="JBSFX" time="2025-09-02T00:00:00Z">
-        <source main="main">Renaming/JBSFX - Reaper Track and Item Renamer.lua</source>
+        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Renaming/JBSFX%20-%20Reaper%20Track%20and%20Item%20Renamer.lua</source>
       </version>
     </reapack>
   </category>
-
 </index>
