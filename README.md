@@ -6,6 +6,15 @@ This ReaPack repository contains scripts for audio post-production workflows, in
 
 **Author:** [joshadambell.com](https://joshadambell.com)
 
+## 📦 Installation
+
+- Extensions → ReaPack → Import Repositories
+- Paste this: https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/index.xml
+- Browse Repositories → Search "joshadambell" → Right Click → Install
+- Actions → Show Action List
+- Search "joshadambell"
+- Run
+
 ## 📜 Scripts
 
 ### 📝 Item & Track Renamer
@@ -66,13 +75,7 @@ Takes the last played file from Media Explorer, processes it through FX on a pre
 - Respects Media Explorer time selections
 - Keeps Media Explorer rate/pitch/volume settings
 - Resets playback params after baking
-- Undoable
-
-## 📦 Installation
-
-**ReaPack:** Add repository URL and install scripts.
-
-**Manual:** Actions → Show Action List → Run.
+- Fully undoable
 
 ## 🛠️ Requirements
 
