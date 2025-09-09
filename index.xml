@@ -43,7 +43,7 @@ Takes the last played file from Media Explorer, processes it through FX on a pre
 - **No FX processing** - Check that your "Media Explorer Preview" track has FX loaded]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
-      <version name="1.0" author="JBSFX" time="2025-09-02T00:00:00Z">
+      <version name="1.1" author="JBSFX" time="2025-09-02T00:00:00Z">
         <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Spotting/JBSFX%20-%20Spot%20Media%20Explorer%20Selection%20Through%20Selected%20Track%20and%20Bake%20FX%20into%20Item%20(only%20bakes%20time%20selection).lua</source>
       </version>
     </reapack>
@@ -89,7 +89,7 @@ Takes the last played file from Media Explorer, processes it through FX on a pre
 - **No FX processing** - Check that your "Media Explorer Preview" track has FX loaded]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
-      <version name="1.0" author="JBSFX" time="2025-09-02T00:00:00Z">
+      <version name="1.1" author="JBSFX" time="2025-09-02T00:00:00Z">
         <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Spotting/JBSFX%20-%20Spot%20Media%20Explorer%20Selection%20Through%20Selected%20Track%20and%20Bake%20FX%20into%20Item%20(bakes%20whole%20file).lua</source>
       </version>
     </reapack>
@@ -157,9 +157,10 @@ Result: "SONG_Guitar_01", "SONG_Bass_02"
 - All operations are undoable]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
-      <version name="1.0" author="JBSFX" time="2025-09-02T00:00:00Z">
+      <version name="1.1" author="JBSFX" time="2025-09-02T00:00:00Z">
         <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Renaming/JBSFX%20-%20Reaper%20Track%20and%20Item%20Renamer.lua</source>
       </version>
     </reapack>
   </category>
 </index>
+
