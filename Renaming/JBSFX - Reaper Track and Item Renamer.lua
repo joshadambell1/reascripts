@@ -4,18 +4,20 @@
 -- @changelog
 --   + Initial release
 -- @about
+--   # Reaper Item & Track Renamer
+--
 --   Batch rename items and tracks with live preview. 
 --   GUI-based tool with find/replace, prefix/suffix, character removal, and auto-numbering.
 --
--- @requirements
+--   ## Requirements
 --   - ReaImGui extension (install via ReaPack)
 --
--- @setup
+--   ## Setup
 --   1. Install ReaImGui via ReaPack
 --   2. Install script: Actions → Show Action List → Load → select .lua file
 --   3. Assign keyboard shortcut if desired
 --
--- @usage
+--   ## Usage
 --   1. Select items/tracks in Reaper
 --   2. Run script to open GUI
 --   3. Check "Enable Item Renaming" or "Enable Track Renaming" (or both)
@@ -27,31 +29,31 @@
 --   5. Watch live preview update
 --   6. Click action buttons to apply
 --
--- @tools
---   Find & Replace:
---     - Replace all/first/last instances
---     - Case sensitive option
+--   ## Tools
+--   **Find & Replace**
+--   - Replace all/first/last instances
+--   - Case sensitive option
 --
---   Prefix & Suffix:
---     - Add text to beginning or end of names
+--   **Prefix & Suffix**
+--   - Add text to beginning or end of names
 --
---   Character Removal:
---     - Remove X characters from start or end
+--   **Character Removal**
+--   - Remove X characters from start or end
 --
---   Numbering:
---     - Add sequential numbers with separator (space/underscore/hyphen)
---     - Zero padding options (none/01/001/0001)
---     - Custom starting number
---     - Items and tracks numbered separately
+--   **Numbering**
+--   - Add sequential numbers with separator (space/underscore/hyphen)
+--   - Zero padding options (none/01/001/0001)
+--   - Custom starting number
+--   - Items and tracks numbered separately
 --
--- @example
+--   ## Example
 --   Original: "Guitar.wav", "Bass.wav"
 --   - Add prefix "SONG_"
 --   - Remove ".wav"
 --   - Add numbering with underscore, 2-digit padding
 --   Result: "SONG_Guitar_01", "SONG_Bass_02"
 --
--- @options
+--   ## Options
 --   - Auto-refresh when selection changes
 --   - Live preview shows before/after names
 --   - All operations are undoable

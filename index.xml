@@ -36,11 +36,11 @@ Takes the last played file from Media Explorer, processes it through FX on a pre
 - Resets playback params after baking
 - Undoable
 
-## Troubleshooting
+## Issues
 
-- **"Please select a track first"** - Make sure you have a track selected before running the script
-- **"No file selected in Media Explorer"** - Preview a file in Media Explorer first
-- **No FX processing** - Check that your "Media Explorer Preview" track has FX loaded]]></description>
+- "Please select a track first" = select a track first
+- "No file selected in Media Explorer" = preview a file first  
+- No FX processing = add FX to preview track]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
       <version name="1.1" author="JBSFX" time="2025-09-09T00:00:00Z">
@@ -82,11 +82,11 @@ Takes the last played file from Media Explorer, processes it through FX on a pre
 - Resets playback params after baking
 - Undoable
 
-## Troubleshooting
+## Issues
 
-- **"Please select a track first"** - Make sure you have a track selected before running the script
-- **"No file selected in Media Explorer"** - Preview a file in Media Explorer first
-- **No FX processing** - Check that your "Media Explorer Preview" track has FX loaded]]></description>
+- "Please select a track first" = select a track first
+- "No file selected in Media Explorer" = preview a file first  
+- No FX processing = add FX to preview track]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
       <version name="1.1" author="JBSFX" time="2025-09-09T00:00:00Z">
