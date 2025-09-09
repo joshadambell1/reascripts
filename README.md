@@ -17,8 +17,7 @@ This ReaPack repository contains scripts for audio post-production workflows, in
 
 ## 🛠️ Requirements
 
-- For the Renamer: "ReaImGui: ReaScript binding for Dear ImGui extension"
-- From the repository: https://github.com/ReaTeam/Extensions/raw/master/index.xml
+- For the Renamer: **"ReaImGui: ReaScript binding for Dear ImGui extension"** from the repository: **https://github.com/ReaTeam/Extensions/raw/master/index.xml**
 
 ## 📜 Scripts
 
