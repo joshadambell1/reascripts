@@ -2,6 +2,8 @@
 
 Game Audio and Audio Post tools for Reaper.
 
+**Author:** [joshadambell.com](https://joshadambell.com)
+
 ## 📜 Scripts
 
 ### 📝 Item & Track Renamer
