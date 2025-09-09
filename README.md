@@ -1,4 +1,4 @@
-# JBSFX Reaper Scripts
+## JBSFX Reaper Scripts
 
 Renaming/JBSFX - Reaper Track and Item Renamer
 
