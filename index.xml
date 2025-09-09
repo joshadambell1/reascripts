@@ -3,44 +3,7 @@
   <category name="Spotting">
     <reapack name="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection).lua" type="script" desc="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection)">
       <metadata>
-        <description><![CDATA[# Media Explorer Spotting Scripts
-
-Replaces Soundminer's "Spot through DSP Rack" functionality. Preview audio through FX and spot processed files onto your timeline.
-
-Takes the last played file from Media Explorer, processes it through FX on a preview track, then places the final item on your selected track at the cursor.
-
-**Two versions available:**
-- **"only bakes time selection"** - Trims to Media Explorer selection first, then processes (more efficient, bakes only the time selection from Media Explorer)
-- **"bakes whole file"** - Processes entire file through FX, then trims to selection (bakes full file for more flexibility later)
-
-## Setup
-
-1. Create track named "Media Explorer Preview" 
-2. Add FX to that track
-3. In Media Explorer Options, set playback to "Play through first track named 'Media Explorer Preview' or first selected track"
-4. Install scripts: Actions → Show Action List → Load → select .lua files
-
-## Usage
-
-1. Preview files in Media Explorer (plays through FX track)
-2. Move cursor to where you want the sound
-3. Select destination track 
-4. Run script
-5. Processed audio appears on selected track
-
-## What it does
-
-- Bakes FX from preview track into final audio
-- Respects Media Explorer time selections  
-- Keeps Media Explorer rate/pitch/volume settings
-- Resets playback params after baking
-- Undoable
-
-## Issues
-
-- "Please select a track first" = select a track first
-- "No file selected in Media Explorer" = preview a file first  
-- No FX processing = add FX to preview track]]></description>
+        <description><![CDATA[Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection)]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="Josh Adam Bell" time="2025-09-09T18:38:00Z">
@@ -49,44 +12,7 @@ Takes the last played file from Media Explorer, processes it through FX on a pre
     </reapack>
     <reapack name="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file).lua" type="script" desc="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file)">
       <metadata>
-        <description><![CDATA[# Media Explorer Spotting Scripts
-
-Replaces Soundminer's "Spot through DSP Rack" functionality. Preview audio through FX and spot processed files onto your timeline.
-
-Takes the last played file from Media Explorer, processes it through FX on a preview track, then places the final item on your selected track at the cursor.
-
-**Two versions available:**
-- **"only bakes time selection"** - Trims to Media Explorer selection first, then processes (more efficient, bakes only the time selection from Media Explorer)
-- **"bakes whole file"** - Processes entire file through FX, then trims to selection (bakes full file for more flexibility later)
-
-## Setup
-
-1. Create track named "Media Explorer Preview" 
-2. Add FX to that track
-3. In Media Explorer Options, set playback to "Play through first track named 'Media Explorer Preview' or first selected track"
-4. Install scripts: Actions → Show Action List → Load → select .lua files
-
-## Usage
-
-1. Preview files in Media Explorer (plays through FX track)
-2. Move cursor to where you want the sound
-3. Select destination track 
-4. Run script
-5. Processed audio appears on selected track
-
-## What it does
-
-- Bakes FX from preview track into final audio
-- Respects Media Explorer time selections  
-- Keeps Media Explorer rate/pitch/volume settings
-- Resets playback params after baking
-- Undoable
-
-## Issues
-
-- "Please select a track first" = select a track first
-- "No file selected in Media Explorer" = preview a file first  
-- No FX processing = add FX to preview track]]></description>
+        <description><![CDATA[Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file)]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="Josh Adam Bell" time="2025-09-09T18:38:00Z">
@@ -97,64 +23,7 @@ Takes the last played file from Media Explorer, processes it through FX on a pre
   <category name="Renaming">
     <reapack name="Reaper Track and Item Renamer.lua" type="script" desc="Reaper Track and Item Renamer">
       <metadata>
-        <description><![CDATA[# Reaper Item & Track Renamer
-
-Batch rename items and tracks with live preview. GUI-based tool with find/replace, prefix/suffix, character removal, and auto-numbering.
-
-## Requirements
-
-- ReaImGui extension (install via ReaPack)
-
-## Setup
-
-1. Install ReaImGui via ReaPack
-2. Install script: Actions → Show Action List → Load → select .lua file
-3. Assign keyboard shortcut if desired
-
-## Usage  
-
-1. Select items/tracks in Reaper
-2. Run script to open GUI
-3. Check "Enable Item Renaming" or "Enable Track Renaming" (or both)
-4. Use any combination of tools:
-   - Find & Replace for text changes
-   - Prefix/Suffix for adding text to start/end  
-   - Character removal for trimming
-   - Numbering for sequential numbers
-5. Watch live preview update
-6. Click action buttons to apply
-
-## Tools
-
-**Find & Replace**
-- Replace all/first/last instances
-- Case sensitive option
-
-**Prefix & Suffix** 
-- Add text to beginning or end of names
-
-**Character Removal**
-- Remove X characters from start or end
-
-**Numbering**
-- Add sequential numbers with separator (space/underscore/hyphen)
-- Zero padding options (none/01/001/0001)
-- Custom starting number
-- Items and tracks numbered separately
-
-## Example
-
-Original: "Guitar.wav", "Bass.wav"
-- Add prefix "SONG_"
-- Remove ".wav" 
-- Add numbering with underscore, 2-digit padding
-Result: "SONG_Guitar_01", "SONG_Bass_02"
-
-## Options
-
-- Auto-refresh when selection changes
-- Live preview shows before/after names
-- All operations are undoable]]></description>
+        <description><![CDATA[Reaper Track and Item Renamer]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="Josh Adam Bell" time="2025-09-09T18:38:00Z">
