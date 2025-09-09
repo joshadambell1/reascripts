@@ -1,6 +1,6 @@
 -- @description Reaper Item & Track Renamer
 -- @version 1.0
--- @author Josh Adam Bell
+-- @author joshadambell
 -- @dependencies ReaImGui extension
 -- @links Website https://joshadambell.com
 -- @changelog

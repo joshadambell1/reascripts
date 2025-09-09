@@ -1,6 +1,6 @@
 -- @description Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file)
 -- @version 1.0
--- @author Josh Adam Bell
+-- @author joshadambell
 -- @links Website https://joshadambell.com
 -- @changelog
 --   + First public release
