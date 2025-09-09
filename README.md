@@ -27,8 +27,6 @@ Batch rename items and tracks with a GUI. Supports find/replace, prefixes, suffi
 4. Use any combination of tools and watch live preview
 5. Click action buttons to apply changes
 
-**Example:** `Guitar.wav` → `SONG_Guitar_01`
-
 **Requires:** ReaImGui extension (install via ReaPack)
 
 ### 🎧 Media Explorer Spotting Scripts  
