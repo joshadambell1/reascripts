@@ -7,7 +7,7 @@ Game Audio and Audio Post tools for Reaper.
 ## 📜 Scripts
 
 ### 📝 Item & Track Renamer
-`Renaming/JBSFX - Reaper Track and Item Renamer.lua`
+`Renaming/Reaper Track and Item Renamer.lua`
 
 Batch rename items and tracks with a GUI. Supports find/replace, prefixes, suffixes, character removal, and auto-numbering with live preview.
 
