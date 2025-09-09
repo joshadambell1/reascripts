@@ -15,6 +15,11 @@ This ReaPack repository contains scripts for audio post-production workflows, in
 - Search "joshadambell"
 - Run
 
+## 🛠️ Requirements
+
+- For the Renamer: "ReaImGui: ReaScript binding for Dear ImGui extension"
+- From the repository: https://github.com/ReaTeam/Extensions/raw/master/index.xml
+
 ## 📜 Scripts
 
 ### 📝 Item & Track Renamer
@@ -76,10 +81,6 @@ Takes the last played file from Media Explorer, processes it through FX on a pre
 - Keeps Media Explorer rate/pitch/volume settings
 - Resets playback params after baking
 - Fully undoable
-
-## 🛠️ Requirements
-
-- Renamer: ReaImGui extension (available via ReaPack)
 
 ## 💬 Support
 
