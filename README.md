@@ -74,12 +74,11 @@ Takes the last played file from Media Explorer, processes it through FX on a pre
 
 **ReaPack:** Add repository URL and install scripts.
 
-**Manual:** Download .lua files and load via Actions → Show Action List → Load.
+**Manual:** Actions → Show Action List → Run.
 
 ## 🛠️ Requirements
 
 - Renamer: ReaImGui extension (available via ReaPack)
-- Spotting: Standard Reaper installation
 
 ## 💬 Support
 
