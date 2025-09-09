@@ -3,7 +3,19 @@
   <category name="Spotting">
     <reapack name="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection).lua" type="script" desc="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection)">
       <metadata>
-        <description><![CDATA[Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection)]]></description>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Media Explorer Spotting Script\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b (Only Bakes Time Selection)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Replaces Soundminer's "Spot through DSP Rack" functionality. Preview audio files through FX and place processed versions onto your timeline.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b How it works:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Trims to Media Explorer selection first\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Processes only selected audio through FX\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab More efficient for short clips\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Setup:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Create track named "Media Explorer Preview"\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Add FX to preview track\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Configure Media Explorer to play through preview track\par}
+}]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="Josh Adam Bell" time="2025-09-09T18:38:00Z">
@@ -12,7 +24,19 @@
     </reapack>
     <reapack name="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file).lua" type="script" desc="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file)">
       <metadata>
-        <description><![CDATA[Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file)]]></description>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Media Explorer Spotting Script\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b (Bakes Whole File)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Replaces Soundminer's "Spot through DSP Rack" functionality. Preview audio files through FX and place processed versions onto your timeline.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b How it works:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Processes entire file through FX first\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Trims to selection afterward\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Better when FX need full audio context (reverb, compression, etc)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Setup:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Create track named "Media Explorer Preview"\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Add FX to preview track\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Configure Media Explorer to play through preview track\par}
+}]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="Josh Adam Bell" time="2025-09-09T18:38:00Z">
@@ -23,7 +47,20 @@
   <category name="Renaming">
     <reapack name="Reaper Track and Item Renamer.lua" type="script" desc="Reaper Track and Item Renamer">
       <metadata>
-        <description><![CDATA[Reaper Track and Item Renamer]]></description>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Reaper Track and Item Renamer\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Batch rename items and tracks with a GUI. Supports find/replace, prefixes, suffixes, character removal, and auto-numbering with live preview.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Features:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Find & replace text (all, first, or last instance)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Add prefixes and suffixes\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Remove characters from start or end\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Add sequential numbers with separators and zero-padding\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Live preview and auto-refresh on selection change\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Example:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 "Guitar.wav" \'96 "SONG_Guitar_01"\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Requires:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 ReaImGui extension (available via ReaPack)\par}
+}]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="Josh Adam Bell" time="2025-09-09T18:38:00Z">
@@ -31,6 +68,17 @@
       </version>
     </reapack>
   </category>
+  <metadata>
+    <link rel="website">https://joshadambell.com</link>
+    <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Josh Adam Bell - Reaper Tools\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Game Audio and Audio Post tools for Reaper.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 This ReaPack repository contains scripts for audio post-production workflows, including batch renaming tools and Media Explorer spotting functionality.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Scripts included:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Item & Track Renamer - Batch rename with GUI, find/replace, prefixes, numbering\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Media Explorer Spotting Scripts - Replace Soundminer's DSP Rack functionality\par}
+}]]></description>
+  </metadata>
 </index>
 
 

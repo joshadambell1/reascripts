@@ -1,6 +1,8 @@
-# 🎵 Reaper Scripts
+# Josh Adam Bell - Reaper Tools
 
 Game Audio and Audio Post tools for Reaper.
+
+This ReaPack repository contains scripts for audio post-production workflows, including batch renaming tools and Media Explorer spotting functionality.
 
 **Author:** [joshadambell.com](https://joshadambell.com)
 
