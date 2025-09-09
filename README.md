@@ -1,4 +1,4 @@
-# Josh Adam Bell - Reaper Tools
+# joshadambell - reascripts
 
 Game Audio and Audio Post tools for Reaper.
 
