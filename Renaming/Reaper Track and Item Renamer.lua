@@ -1,6 +1,8 @@
 -- @description Reaper Item & Track Renamer
 -- @version 1.0
 -- @author Josh Adam Bell
+-- @provides [main] .
+-- @links Website https://joshadambell.com
 -- @changelog
 --   + First public release
 -- @about

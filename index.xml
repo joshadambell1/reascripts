@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="Reaper Scripts">
+<index version="1" name="Josh Adam Bell - Reaper Tools">
   <category name="Spotting">
     <reapack name="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection).lua" type="script" desc="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection)">
       <metadata>
@@ -43,7 +43,7 @@ Takes the last played file from Media Explorer, processes it through FX on a pre
 - No FX processing = add FX to preview track]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
-      <version name="1.0" author="Josh Adam Bell" time="2025-09-09T00:00:00Z">
+      <version name="1.0" author="Josh Adam Bell" time="2025-09-09T18:38:00Z">
         <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Spotting/Spot%20Media%20Explorer%20Selection%20Through%20Selected%20Track%20and%20Bake%20FX%20into%20Item%20(only%20bakes%20time%20selection).lua</source>
       </version>
     </reapack>
@@ -89,7 +89,7 @@ Takes the last played file from Media Explorer, processes it through FX on a pre
 - No FX processing = add FX to preview track]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
-      <version name="1.0" author="Josh Adam Bell" time="2025-09-09T00:00:00Z">
+      <version name="1.0" author="Josh Adam Bell" time="2025-09-09T18:38:00Z">
         <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Spotting/Spot%20Media%20Explorer%20Selection%20Through%20Selected%20Track%20and%20Bake%20FX%20into%20Item%20(bakes%20whole%20file).lua</source>
       </version>
     </reapack>
@@ -157,7 +157,7 @@ Result: "SONG_Guitar_01", "SONG_Bass_02"
 - All operations are undoable]]></description>
       </metadata>
       <link rel="website">https://joshadambell.com</link>
-      <version name="1.0" author="Josh Adam Bell" time="2025-09-09T00:00:00Z">
+      <version name="1.0" author="Josh Adam Bell" time="2025-09-09T18:38:00Z">
         <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Renaming/Reaper%20Track%20and%20Item%20Renamer.lua</source>
       </version>
     </reapack>
