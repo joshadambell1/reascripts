@@ -1,55 +1,60 @@
---[[
-================================================================================
-JBSFX REAPER ITEM & TRACK RENAMER
-================================================================================
-
-A comprehensive batch renaming tool for REAPER items and tracks with a clean 
-GUI interface. 
-
-FEATURES:
-- Find & Replace: Search and replace text with options for first/last/all instances
-- Prefix & Suffix: Quickly add text to the beginning or end of names
-- Character Removal: Remove X characters from start or Y characters from end
-- Auto Numbering: Add sequential numbers with customizable format and padding
-- Live Preview: See exactly what your changes will look like before applying
-- Selective Renaming: Choose to work with items only, tracks only, or both
-- Auto-refresh: Automatically updates when you change selection (optional)
-- Flexible Search: Case sensitive/insensitive options
-- Undo Support: All operations are properly undoable
-
-NUMBERING OPTIONS:
-- Separator: Choose between space, underscore, or hyphen
-- Zero Padding: None (1), one zero (01), two zeros (001), or three zeros (0001)
-- Starting Number: Begin numbering from any number between 1-99
-- Independent Sequences: Items and tracks are numbered separately
-
-HOW TO USE:
-1. Select items and/or tracks in REAPER
-2. Run this script to open the renamer window
-3. Choose what you want to rename (items/tracks checkboxes at top)
-4. Use any combination of the renaming tools:
-   - Find & Replace for text substitution
-   - Prefix/Suffix for adding text to start/end
-   - Character removal for trimming names
-   - Numbering for sequential organization
-5. Watch the live preview update as you make changes
-6. Click the appropriate action button to apply changes
-
-EXAMPLE WORKFLOW:
-- Original names: "Guitar.wav", "Bass.wav", "Track 1", "Track 2"
-- Add prefix "SONG_", remove ".wav", add numbering with underscore and padding
-- Result: "SONG_Guitar_01", "SONG_Bass_02", "SONG_Track 1_01", "SONG_Track 2_02"
-
-REQUIREMENTS:
-- REAPER (any recent version)
-- ReaImGui extension (install via ReaPack)
-
-INSTALLATION:
-1. Install ReaImGui via ReaPack if you haven't already
-2. Load this script in REAPER's Actions menu
-
-================================================================================
---]]
+-- @description JBSFX - Reaper Item & Track Renamer
+-- @version 1.1
+-- @author Josh Adam Bell
+-- @changelog
+--   + Initial release
+-- @about
+--   Batch rename items and tracks with live preview. 
+--   GUI-based tool with find/replace, prefix/suffix, character removal, and auto-numbering.
+--
+-- @requirements
+--   - ReaImGui extension (install via ReaPack)
+--
+-- @setup
+--   1. Install ReaImGui via ReaPack
+--   2. Install script: Actions → Show Action List → Load → select .lua file
+--   3. Assign keyboard shortcut if desired
+--
+-- @usage
+--   1. Select items/tracks in Reaper
+--   2. Run script to open GUI
+--   3. Check "Enable Item Renaming" or "Enable Track Renaming" (or both)
+--   4. Use any combination of tools:
+--      - Find & Replace for text changes
+--      - Prefix/Suffix for adding text to start/end
+--      - Character removal for trimming
+--      - Numbering for sequential numbers
+--   5. Watch live preview update
+--   6. Click action buttons to apply
+--
+-- @tools
+--   Find & Replace:
+--     - Replace all/first/last instances
+--     - Case sensitive option
+--
+--   Prefix & Suffix:
+--     - Add text to beginning or end of names
+--
+--   Character Removal:
+--     - Remove X characters from start or end
+--
+--   Numbering:
+--     - Add sequential numbers with separator (space/underscore/hyphen)
+--     - Zero padding options (none/01/001/0001)
+--     - Custom starting number
+--     - Items and tracks numbered separately
+--
+-- @example
+--   Original: "Guitar.wav", "Bass.wav"
+--   - Add prefix "SONG_"
+--   - Remove ".wav"
+--   - Add numbering with underscore, 2-digit padding
+--   Result: "SONG_Guitar_01", "SONG_Bass_02"
+--
+-- @options
+--   - Auto-refresh when selection changes
+--   - Live preview shows before/after names
+--   - All operations are undoable
 
 -- Import ReaImGui
 package.path = reaper.ImGui_GetBuiltinPath() .. '/?.lua'
@@ -870,3 +875,4 @@ end
 -- Start the script
 Init()
 reaper.defer(Loop)
+
