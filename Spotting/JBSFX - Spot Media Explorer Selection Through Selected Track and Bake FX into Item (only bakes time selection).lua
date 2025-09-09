@@ -5,11 +5,32 @@
 -- and renders it through track/take FX. Only the selected portion is processed and preserved.
 
 function main()
-    -- Get the currently selected track
-    local track = reaper.GetSelectedTrack(0, 0)
-    if not track then
+    -- Get the currently selected track (destination for final item)
+    local destination_track = reaper.GetSelectedTrack(0, 0)
+    if not destination_track then
         reaper.ShowMessageBox("Please select a track first", "Error", 0)
         return
+    end
+    
+    -- Find or create "Media Explorer Preview" track
+    local preview_track = nil
+    local track_count = reaper.CountTracks(0)
+    
+    -- Search for existing "Media Explorer Preview" track
+    for i = 0, track_count - 1 do
+        local track = reaper.GetTrack(0, i)
+        local retval, track_name = reaper.GetSetMediaTrackInfo_String(track, "P_NAME", "", false)
+        if track_name == "Media Explorer Preview" then
+            preview_track = track
+            break
+        end
+    end
+    
+    -- Create the track if it doesn't exist
+    if not preview_track then
+        reaper.InsertTrackAtIndex(track_count, false)
+        preview_track = reaper.GetTrack(0, track_count)
+        reaper.GetSetMediaTrackInfo_String(preview_track, "P_NAME", "Media Explorer Preview", true)
     end
     
     -- Get media explorer last played file info using correct API documentation
@@ -26,8 +47,8 @@ function main()
     -- Get current edit cursor position
     local cursor_pos = reaper.GetCursorPosition()
     
-    -- Create new media item on the selected track at cursor position
-    local item = reaper.AddMediaItemToTrack(track)
+    -- Create new media item on the preview track at cursor position
+    local item = reaper.AddMediaItemToTrack(preview_track)
     local take = reaper.AddTakeToMediaItem(item)
     
     -- Set the source file for the take
@@ -105,6 +126,9 @@ function main()
         reaper.SetMediaItemTakeInfo_Value(final_take, "D_VOL", 1.0)
         reaper.SetMediaItemTakeInfo_Value(final_take, "D_PITCH", 0.0)
     end
+    
+    -- Move the item to the destination track
+    reaper.MoveMediaItemToTrack(item, destination_track)
     
     -- Update the timeline
     reaper.UpdateTimeline()
