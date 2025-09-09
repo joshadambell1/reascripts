@@ -1,85 +1,57 @@
-# JBSFX Reaper Scripts
+# 🎵 JBSFX Reaper Scripts
 
-Professional audio post-production tools for Reaper. Built for efficiency and workflow optimization.
+Game Audio and Audio Post tools for Reaper.
 
-## 🎯 Scripts Overview
+## 📜 Scripts
 
 ### 📝 Item & Track Renamer
-**Location:** `Renaming/JBSFX - Reaper Track and Item Renamer.lua`
+`Renaming/JBSFX - Reaper Track and Item Renamer.lua`
 
-Batch rename items and tracks with live preview. GUI-based tool with multiple renaming methods.
+Batch rename items and tracks with a GUI. Supports find/replace, prefixes, suffixes, character removal, and auto-numbering with live preview.
 
-**Key Features:**
-- 🔍 **Find & Replace** - All/first/last instances with case sensitivity
-- 🏷️ **Prefix & Suffix** - Quick text addition to start/end 
-- ✂️ **Character Removal** - Trim X characters from start or end
-- 🔢 **Auto Numbering** - Sequential numbers with custom separators and zero-padding
-- 👁️ **Live Preview** - See changes before applying
-- ⚡ **Auto-refresh** - Updates when selection changes
+- 🔍 Find & replace text (all, first, or last instance)
+- 🏷️ Add prefixes and suffixes  
+- ✂️ Remove characters from start or end
+- 🔢 Add sequential numbers with separators and zero-padding
+- 👁️ Live preview and auto-refresh on selection change
 
-**Example:** `Guitar.wav` → `SONG_Guitar_01`
+Example: `Guitar.wav` → `SONG_Guitar_01`
 
-**Requirements:** ReaImGui extension
+Requires ReaImGui extension.
 
----
+### 🎧 Media Explorer Spotting Scripts  
+`Spotting/` folder
 
-### 🎵 Media Explorer Spotting Scripts  
-**Location:** `Spotting/`
+Replaces Soundminer's "Spot through DSP Rack" functionality. Preview audio files through FX and place processed versions onto your timeline.
 
-Replace Soundminer's "Spot through DSP Rack" functionality. Preview audio through FX and spot processed files directly onto your timeline.
+**Two versions available:**
 
-#### Version 1: "Only Bakes Time Selection"
-**File:** `JBSFX - Spot...Item (only bakes time selection).lua`
+⚡ **"Only Bakes Time Selection"** - Trims to Media Explorer selection first, then processes. More efficient for short clips.
 
-**Best for:** Efficiency when you only need the selected portion
-- Trims Media Explorer selection first
-- Processes only selected audio through FX
-- Faster processing for short selections
+🎛️ **"Bakes Whole File"** - Processes entire file through FX, then trims to selection. Better when FX need full audio context (reverb, compression, etc).
 
-#### Version 2: "Bakes Whole File"  
-**File:** `JBSFX - Spot...Item (bakes whole file).lua`
-
-**Best for:** When FX need full audio context
-- Processes entire file through FX first
-- Trims to selection afterward  
-- Preserves reverb tails, dynamics processing context
-
-**How it Works:**
-1. 🎧 Preview files in Media Explorer (plays through FX)
-2. 📍 Position cursor where you want the sound
+Usage:
+1. 🎵 Preview files in Media Explorer (plays through FX track)
+2. 📍 Position cursor at desired location
 3. 🎯 Select destination track
 4. ▶️ Run script
-5. ✨ Processed audio appears on selected track
 
-**Setup Required:**
-- Create track named "Media Explorer Preview"
-- Add desired FX to preview track
-- Configure Media Explorer playback routing
-
----
+Setup:
+- 🎚️ Create track named "Media Explorer Preview"
+- 🔧 Add FX to preview track
+- ⚙️ Configure Media Explorer to play through preview track
 
 ## 📦 Installation
 
-### Via ReaPack (Recommended)
-1. Add repository URL to ReaPack
-2. Install desired scripts
-3. Assign keyboard shortcuts for faster workflow
+**ReaPack:** Add repository URL and install scripts.
 
-### Manual Installation
-1. Download `.lua` files
-2. Load via Actions → Show Action List → Load
-3. Assign shortcuts as needed
+**Manual:** Download .lua files and load via Actions → Show Action List → Load.
 
 ## 🛠️ Requirements
 
-- **Renamer:** ReaImGui extension (install via ReaPack)
-- **Spotting:** Standard Reaper installation
+- 📝 Renamer: ReaImGui extension (available via ReaPack)
+- 🎧 Spotting: Standard Reaper installation
 
-## 📞 Support
+## 💬 Support
 
-For issues, feature requests, or questions:
-**Contact:** [joshadambell.com](https://joshadambell.com)
-
----
-
-*These scripts are designed to streamline professional audio post-production workflows in Reaper.*
+For issues or feature requests: [joshadambell.com](https://joshadambell.com)
