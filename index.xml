@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <index version="1" name="joshadambell - reascripts">
   <category name="Spotting">
-    <reapack name="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection).lua" type="script" desc="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection)">
+    <reapack name="joshadambell_Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection).lua" type="script" desc="joshadambell_Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection)">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Media Explorer Spotting Script\par}
@@ -19,10 +19,10 @@
       </metadata>
       <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="joshadambell" time="2025-09-09T18:38:00Z">
-        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Spotting/Spot%20Media%20Explorer%20Selection%20Through%20Selected%20Track%20and%20Bake%20FX%20into%20Item%20(only%20bakes%20time%20selection).lua</source>
+        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Spotting/joshadambell_Spot%20Media%20Explorer%20Selection%20Through%20Selected%20Track%20and%20Bake%20FX%20into%20Item%20(only%20bakes%20time%20selection).lua</source>
       </version>
     </reapack>
-    <reapack name="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file).lua" type="script" desc="Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file)">
+    <reapack name="joshadambell_Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file).lua" type="script" desc="joshadambell_Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file)">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Media Explorer Spotting Script\par}
@@ -40,12 +40,12 @@
       </metadata>
       <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="joshadambell" time="2025-09-09T18:38:00Z">
-        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Spotting/Spot%20Media%20Explorer%20Selection%20Through%20Selected%20Track%20and%20Bake%20FX%20into%20Item%20(bakes%20whole%20file).lua</source>
+        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Spotting/joshadambell_Spot%20Media%20Explorer%20Selection%20Through%20Selected%20Track%20and%20Bake%20FX%20into%20Item%20(bakes%20whole%20file).lua</source>
       </version>
     </reapack>
   </category>
   <category name="Renaming">
-    <reapack name="Reaper Track and Item Renamer.lua" type="script" desc="Reaper Track and Item Renamer">
+    <reapack name="joshadambell_Reaper Track and Item Renamer.lua" type="script" desc="joshadambell_Reaper Track and Item Renamer">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Reaper Track and Item Renamer\par}
@@ -64,7 +64,7 @@
       </metadata>
       <link rel="website">https://joshadambell.com</link>
       <version name="1.0" author="joshadambell" time="2025-09-09T18:38:00Z">
-        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Renaming/Reaper%20Track%20and%20Item%20Renamer.lua</source>
+        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Renaming/joshadambell_Reaper%20Track%20and%20Item%20Renamer.lua</source>
       </version>
     </reapack>
   </category>
