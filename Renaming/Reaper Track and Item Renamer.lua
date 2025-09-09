@@ -1,8 +1,8 @@
--- @description JBSFX - Reaper Item & Track Renamer
--- @version 1.1
+-- @description Reaper Item & Track Renamer
+-- @version 1.0
 -- @author Josh Adam Bell
 -- @changelog
---   + Initial release
+--   + First public release
 -- @about
 --   # Reaper Item & Track Renamer
 --
@@ -617,7 +617,7 @@ function Loop()
         end
     end
     
-    local visible, open = ImGui.Begin(ctx, 'JBSFX Reaper Item & Track Renamer', true, ImGui.WindowFlags_AlwaysAutoResize | ImGui.WindowFlags_NoCollapse)
+    local visible, open = ImGui.Begin(ctx, 'Reaper Item & Track Renamer', true, ImGui.WindowFlags_AlwaysAutoResize | ImGui.WindowFlags_NoCollapse)
     
     if visible then
         -- Enable/Disable options

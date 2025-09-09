@@ -1,8 +1,8 @@
--- @description JBSFX - Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection)
--- @version 1.1
+-- @description Spot Media Explorer Selection Through Selected Track and Bake FX into Item (only bakes time selection)
+-- @version 1.0
 -- @author Josh Adam Bell
 -- @changelog
---   + Initial release
+--   + First public release
 -- @about
 --   # Media Explorer Spotting Scripts
 --

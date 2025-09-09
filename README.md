@@ -1,4 +1,4 @@
-# 🎵 JBSFX Reaper Scripts
+# 🎵 Reaper Scripts
 
 Game Audio and Audio Post tools for Reaper.
 
