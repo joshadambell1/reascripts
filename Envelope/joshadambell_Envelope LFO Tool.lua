@@ -220,7 +220,7 @@ function draw_help_window()
             ImGui.Separator(ctx)
             
             -- Envelope editors
-            ImGui.TextColored(ctx, 0xFF00FFFF, 'Envelope Editors (0.0-2.0 Multipliers):')
+            ImGui.TextColored(ctx, 0xFF00FFFF, 'Envelope Editors (0.0-3.0 Multipliers):')
             ImGui.TextColored(ctx, 0x952E2B7F, '• Rate Multiplier:') 
             ImGui.SameLine(ctx)
             ImGui.Text(ctx, ' Modulates frequency over time')
@@ -249,6 +249,7 @@ function draw_help_window()
             ImGui.Text(ctx, '0.0 = 0% of slider value (parameter disabled)')
             ImGui.Text(ctx, '1.0 = 100% of slider value (default, no change)')
             ImGui.Text(ctx, '2.0 = 200% of slider value (double the setting)')
+            ImGui.Text(ctx, '3.0 = 300% of slider value (triple the setting)')
             
             ImGui.Separator(ctx)
             
@@ -502,8 +503,8 @@ function draw_shape_selector()
             local is_selected = (LFO.currentShape == i)
             if ImGui.Selectable(ctx, shapeName, is_selected) then
                 LFO.currentShape = i
-                -- Auto apply if enabled
-                if LFO.autoApply then
+                -- Auto apply if enabled, but only if we have a valid envelope and time range
+                if LFO.autoApply and LFO.targetEnv and LFO.timeEnd > LFO.timeStart then
                     apply_lfo()
                 end
             end
@@ -534,15 +535,44 @@ function draw_single_envelope_editor(envelope_type, envelope_data, canvas_size, 
         canvas_pos[1] + canvas_size[1], canvas_pos[2] + canvas_size[2],
         0xFF1A1A1A)
     
-    -- Draw grid lines
+    -- Get value range for current envelope type
+    local function get_envelope_range()
+        if envelope_type == 'custom_shape' then
+            -- Custom shape uses 0.0-1.0 range as it represents the actual LFO waveform
+            return 0.0, 1.0
+        else
+            -- All other envelopes use 0.0-3.0 range as they are multipliers
+            return 0.0, 3.0
+        end
+    end
+    
+    -- Draw grid lines based on value range
     local grid_color = 0xFFFFFF41
+    local min_val, max_val = get_envelope_range()
+    
+    -- Vertical grid lines (time divisions) - 4 lines = 5 sections (20% each)
     for i = 1, 4 do
         local x = canvas_pos[1] + (i / 5) * canvas_size[1]
         ImGui.DrawList_AddLine(draw_list, x, canvas_pos[2], x, canvas_pos[2] + canvas_size[2], grid_color, 1.0)
     end
-    for i = 1, 4 do
-        local y = canvas_pos[2] + (i / 5) * canvas_size[2]
-        ImGui.DrawList_AddLine(draw_list, canvas_pos[1], y, canvas_pos[1] + canvas_size[1], y, grid_color, 1.0)
+    
+    -- Horizontal grid lines (value divisions) - based on actual value range
+    if envelope_type == 'custom_shape' then
+        -- Custom shape: 0.0-1.0 range, 4 lines at 0.2, 0.4, 0.6, 0.8
+        for i = 1, 4 do
+            local value = i * 0.2 -- 0.2, 0.4, 0.6, 0.8
+            local y_norm = 1.0 - value -- Flip Y coordinate (0 at top, 1 at bottom)
+            local y = canvas_pos[2] + y_norm * canvas_size[2]
+            ImGui.DrawList_AddLine(draw_list, canvas_pos[1], y, canvas_pos[1] + canvas_size[1], y, grid_color, 1.0)
+        end
+    else
+        -- Multiplier envelopes: 0.0-3.0 range, 6 lines at 0.5, 1.0, 1.5, 2.0, 2.5, 3.0
+        for i = 1, 6 do
+            local value = i * 0.5 -- 0.5, 1.0, 1.5, 2.0, 2.5, 3.0
+            local y_norm = 1.0 - (value / max_val) -- Convert to 0-1 range and flip
+            local y = canvas_pos[2] + y_norm * canvas_size[2]
+            ImGui.DrawList_AddLine(draw_list, canvas_pos[1], y, canvas_pos[1] + canvas_size[1], y, grid_color, 1.0)
+        end
     end
     
     -- Create invisible button for canvas interaction (unique ID for each editor)
@@ -556,17 +586,6 @@ function draw_single_envelope_editor(envelope_type, envelope_data, canvas_size, 
     local mouse_released = ImGui.IsMouseReleased(ctx, 0)
     local right_mouse_clicked = ImGui.IsMouseClicked(ctx, 1)
     local right_mouse_released = ImGui.IsMouseReleased(ctx, 1)
-    
-    -- Get value range for current envelope type
-    local function get_envelope_range()
-        if envelope_type == 'custom_shape' then
-            -- Custom shape uses 0.0-1.0 range as it represents the actual LFO waveform
-            return 0.0, 1.0
-        else
-            -- All other envelopes use 0.0-2.0 range as they are multipliers
-            return 0.0, 2.0
-        end
-    end
     
     -- Convert mouse position to envelope coordinates
     local function screen_to_env(screen_x, screen_y)
@@ -1240,8 +1259,12 @@ end
 
 -- Main GUI loop
 function main_loop()
-    -- Window size constraints - adjust minimum height when custom shape is selected
-    ImGui.SetNextWindowSizeConstraints(ctx, 1040, 1040, math.huge, math.huge)
+    -- Dynamic window size constraints - adjust minimum height when custom shape is selected
+    local min_height = 1040  -- Base height for standard interface
+    if LFO.currentShape == 7 then  -- Custom shape selected
+        min_height = 1200  -- Extra height for custom shape editor
+    end
+    ImGui.SetNextWindowSizeConstraints(ctx, 1040, min_height, math.huge, math.huge)
     
     -- Set window background to be opaque
     ImGui.SetNextWindowBgAlpha(ctx, 1.0)
