@@ -1,25 +1,24 @@
 --[[
-ReaScript name: js_Envelope LFO generator and shaper (ReaImGui).lua
+ReaScript name: joshadambell_Envelope LFO Tool.lua
 Version: 3.00
-Author: joshadambell (modernized from juliansader/Xenakios original)
+Author: joshadambell (very heavily inspired by juliansader/Xenakios original)
 Website: https://joshadambell.com
 Dependencies: ReaImGui extension
 About:
-  # LFO Generator and Shaper - ReaImGui Version
+  # LFO Generator for REAPER Envelopes
   
-  Modern ReaImGui-based LFO generator for REAPER automation envelopes.
-  Modernized version of the classic juliansader LFO Tool with enhanced interface.
+  LFO generator with ReaImGui interface for REAPER automation envelopes.
+  Very very heavily inspired by the classic juliansader LFO Tool.
   
   ## Requirements
   - ReaImGui extension (install via ReaPack)
   - REAPER v6.0 or higher
   
   ## Features
-  - Professional ReaImGui interface
-  - Interactive envelope editing
+  - ReaImGui interface
+  - Envelope editing
   - Multiple LFO shapes
-  - Real-time parameter control
-  - Automation item support
+  - Auto-apply option
 ]]
 
 -- ReaImGui setup
@@ -38,7 +37,7 @@ local ctx = ImGui.CreateContext('LFO Generator v3.0')
 -- Global state
 local LFO = {
     -- Core parameters
-    rate = 5.0, -- Hz - much more sensible default
+    rate = 5.0, -- Hz
     amplitude = 0.5,
     center = 0.5,
     phase = 0.0,
@@ -280,7 +279,7 @@ end
 function draw_parameters()
     ImGui.SeparatorText(ctx, 'LFO Parameters')
     
-    -- Get available content width and calculate responsive slider width
+    -- Calculate slider width
     local content_width = ImGui.GetContentRegionAvail(ctx)
     local slider_width = math.max(200, content_width - 130) -- Leave 130px padding for labels, minimum 200px
     
@@ -642,7 +641,7 @@ function draw_single_envelope_editor(envelope_type, envelope_data, canvas_size, 
                 local last_point = envelope_data[#envelope_data]
                 local distance = math.sqrt((env_x - last_point[1])^2 + (env_y - last_point[2])^2)
                 
-                -- Add point if we've moved far enough (prevents too many points)
+                -- Add point if moved far enough
                 if distance > 0.02 then -- Adjust threshold as needed
                     -- Find insertion point to keep envelope sorted by x
                     local insert_idx = #envelope_data + 1
@@ -691,7 +690,7 @@ function draw_single_envelope_editor(envelope_type, envelope_data, canvas_size, 
             -- Check for nodes to delete under mouse cursor
             local closest_node = find_closest_node(mx, my)
             if closest_node and closest_node > 1 and closest_node < #envelope_data then
-                -- Store last deleted position to prevent rapid re-deletion of same area
+                -- Track last deleted position
                 local last_delete_key = drag_key .. '_last_delete_pos'
                 if not LFO[last_delete_key] then LFO[last_delete_key] = {-1, -1} end
                 
@@ -787,23 +786,23 @@ end
 function draw_envelope_editors()
     ImGui.SeparatorText(ctx, 'Envelope Editors')
     
-    -- Calculate responsive envelope editor sizes
+    -- Calculate envelope editor sizes
     local content_width, content_height = ImGui.GetContentRegionAvail(ctx)
     local spacing = 10
     local available_width = content_width - (2 * spacing) -- Account for spacing between 3 editors
     local single_width = math.max(200, math.floor(available_width / 3)) -- Minimum 200px per editor
     
-    -- Calculate responsive height - use available height with minimum but no maximum limit
+    -- Calculate height
     local envelope_height = math.max(150, content_height - 40) -- Min 150px, no max limit, leave 40px padding
     local single_canvas_size = {single_width, envelope_height}
     
-    -- Safety check: if window is too small, don't draw envelope editors
+    -- Check minimum window size
     if single_width < 150 or envelope_height < 100 then
         ImGui.Text(ctx, 'Window too small - resize to see envelope editors')
         return
     end
     
-    -- Use child windows for proper side-by-side layout
+    -- Child windows for layout
     local child_height = single_canvas_size[2] + 40 -- Extra height for title
     
     -- Define matching background colors for envelope editors
@@ -901,7 +900,7 @@ function generate_lfo_points(duration)
             current_frequency = current_frequency * rate_multiplier
         end
         
-        -- Safety check for frequency
+        -- Frequency bounds check
         if current_frequency < 0.01 or current_frequency > 100 then
             current_frequency = LFO.rate
         end
@@ -913,7 +912,7 @@ function generate_lfo_points(duration)
         -- Generate LFO value based on shape and current phase
         local lfo_amplitude = 1.0 -- Start with full amplitude
         
-        -- Apply shape function - ensure clean -1 to +1 output
+        -- Apply shape function
         if LFO.currentShape == 1 then -- Bezier curve
             local phase_norm = (current_phase % (2 * math.pi)) / (2 * math.pi) -- 0 to 1
             -- Create Bezier curve using tension parameter
@@ -953,7 +952,7 @@ function generate_lfo_points(duration)
             lfo_amplitude = math.sin(current_phase)
         end
         
-        -- Debug: Ensure lfo_amplitude is in expected -1 to +1 range
+        -- Clamp LFO amplitude to expected range
         lfo_amplitude = math.max(-1.0, math.min(1.0, lfo_amplitude))
         
         -- Combine with envelope modulation
@@ -975,12 +974,12 @@ function generate_lfo_points(duration)
         
         -- Calculate final value: Center ± (amplitude/2 * LFO_wave)
         -- Center=0.5, Amp=0.8 should give range 0.1 to 0.9 (0.5 ± 0.4)
-        -- This ensures the LFO oscillates symmetrically around the center point
+        -- Symmetric oscillation around center point
         local half_amplitude = final_amplitude * 0.5
         local lfo_value = final_center + (lfo_amplitude * half_amplitude)
         
         -- No clamping here - let envelope range detection handle it later
-        -- This allows Center to work properly with different envelope types
+        -- Envelope range detection handles clamping
         
         table.insert(points, {
             time = LFO.timeStart + time_pos * duration,
@@ -1011,7 +1010,7 @@ function apply_lfo()
     -- Start undo block
     reaper.Undo_BeginBlock()
     
-    -- Clear existing points in time range using the correct API
+    -- Clear existing points in time range
     reaper.DeleteEnvelopePointRange(LFO.targetEnv, LFO.timeStart, LFO.timeEnd)
     
     -- Generate and insert new LFO points
@@ -1036,7 +1035,7 @@ function apply_lfo()
         -- Map point.value (0-1 range) to envelope's actual range
         local env_value = env_min + point.value * (env_max - env_min)
         
-        -- Clamp to envelope's actual range to prevent REAPER from rejecting the point
+        -- Clamp to envelope range
         env_value = math.max(env_min, math.min(env_max, env_value))
         
         -- Insert point with appropriate shape
@@ -1055,33 +1054,6 @@ function apply_lfo()
     
     reaper.Undo_EndBlock('Apply LFO: ' .. shapes[LFO.currentShape], -1)
     
-    -- Debug: Check parameter values, envelope values, and LFO output
-    local sample_lfo_min = math.huge
-    local sample_lfo_max = -math.huge
-    for _, point in ipairs(lfo_points) do
-        sample_lfo_min = math.min(sample_lfo_min, point.value)
-        sample_lfo_max = math.max(sample_lfo_max, point.value)
-    end
-    
-    -- Check what envelope values are at start and end
-    local start_amp_env = evaluate_envelope(LFO.amplitudeEnvelope, 0.0)
-    local start_center_env = evaluate_envelope(LFO.centerEnvelope, 0.0)
-    
-    -- Calculate what the LFO range SHOULD be (using half-amplitude)
-    local final_amp = LFO.amplitude * start_amp_env  
-    local final_center = LFO.center * start_center_env
-    local half_amp = final_amp * 0.5  -- This should match the calculation in generate_lfo_points
-    local expected_min = final_center - half_amp
-    local expected_max = final_center + half_amp
-    
-    -- Debug: Check if the issue is in the calculation itself
-    local debug_calc = string.format('Debug: final_center=%.2f, final_amp=%.2f, half_amp=%.2f', 
-                                     final_center, final_amp, half_amp)
-    
-    local debug_info = string.format('Sliders: Rate %.1f Hz | Amp %.2f | Center %.2f\nEnvelopes: Amp %.2f | Center %.2f\n%s\nExpected LFO: %.2f to %.2f\nActual LFO: %.2f to %.2f\nEnv Range: %.2f to %.2f', 
-                                     LFO.rate, LFO.amplitude, LFO.center, start_amp_env, start_center_env, debug_calc, expected_min, expected_max, sample_lfo_min, sample_lfo_max, env_min, env_max)
-    
-    -- LFO applied silently - no popup message needed
 end
 
 function reset_parameters()
@@ -1133,8 +1105,8 @@ end
 
 -- Main GUI loop
 function main_loop()
-    -- Set size constraints every frame to maintain minimum window size but allow unlimited growth
-    -- Allow 20% smaller horizontally: 1350 * 0.8 = 1080
+    -- Window size constraints
+    -- Minimum: 1080 x 850, allow unlimited growth
     ImGui.SetNextWindowSizeConstraints(ctx, 1080, 850, math.huge, math.huge)
     
     -- Set window background to be opaque
@@ -1158,8 +1130,7 @@ function main_loop()
     if open then
         reaper.defer(main_loop)
     else
-        -- Clean exit - context cleanup is handled automatically by ReaImGui
-        -- No explicit cleanup needed in most ReaImGui versions
+        -- Context cleanup handled automatically
     end
 end
 
@@ -1180,7 +1151,7 @@ function init()
     
     -- Set initial window size to accommodate three envelope editors side by side
     -- Width: 3 envelope editors (400 each) + 2 spacings (10 each) + padding + slider labels = ~1350
-    -- Height: 850 for better envelope editor visibility
+    -- Height: 850
     ImGui.SetNextWindowSize(ctx, 1350, 850, ImGui.Cond_FirstUseEver)
     main_loop()
 end
