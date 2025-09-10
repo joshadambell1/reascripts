@@ -1,6 +1,6 @@
 --[[
 ReaScript name: joshadambell_Envelope LFO Tool.lua
-Version: 3.00
+Version: 1.00
 Author: joshadambell (very heavily inspired by juliansader/Xenakios original)
 Website: https://joshadambell.com
 Dependencies: ReaImGui extension
