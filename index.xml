@@ -68,6 +68,35 @@
       </version>
     </reapack>
   </category>
+  <category name="Envelope">
+    <reapack name="joshadambell_Envelope LFO Tool.lua" type="script" desc="joshadambell_Envelope LFO Tool">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Envelope LFO Tool\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 LFO Generator for Reaper Envelopes with modern ReaImGui interface. Very very heavily inspired by the classic juliansader LFO Tool.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Features:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Envelope editors with color-coded parameters\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Power curve sliders for better control in lower ranges\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab 6 LFO shapes: Bezier, Saw Down/Up, Square, Triangle, Sine\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Optional auto-apply for real-time updates\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Envelope editing: Shift+drag to draw/erase multiple points\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Randomness controls for parameters\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Hover tooltips and ReaImGui interface\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Usage:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Select automation envelope in REAPER\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Set time selection\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Adjust parameters and draw envelope shapes\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Apply LFO to envelope lane in Reaper\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Requires:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 ReaImGui extension (available via ReaPack)\par}
+}]]></description>
+      </metadata>
+      <link rel="website">https://joshadambell.com</link>
+      <version name="3.0" author="joshadambell" time="2025-09-09T20:00:00Z">
+        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Envelope/joshadambell_Envelope%20LFO%20Tool.lua</source>
+      </version>
+    </reapack>
+  </category>
   <metadata>
     <link rel="website">https://joshadambell.com</link>
     <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
@@ -77,6 +106,7 @@
 {\pard \ql \f0 \sa180 \li0 \fi0 \b Scripts included:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Item & Track Renamer - Batch rename with GUI, find/replace, prefixes, numbering\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Media Explorer Spotting Scripts - Replace Soundminer's DSP Rack functionality\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Envelope LFO Tool - LFO Generator for Reaper Envelopes with interactive envelope editing\par}
 }]]></description>
   </metadata>
 </index>
