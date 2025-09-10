@@ -26,7 +26,8 @@ LFO Generator for Reaper Envelopes with ReaImGui interface. Very very heavily in
 
 **Setup:**
 1. Install ReaImGui extension via ReaPack
-2. Load script: Actions → Show Action List → Load → select .lua file
+2. Install joshadambell_Envelope LFO Tool via ReaPack
+3. Load script: Actions → Show Action List → Load → select .lua file
 
 **Usage:**
 1. Select an automation envelope in REAPER
@@ -45,3 +46,5 @@ LFO Generator for Reaper Envelopes with ReaImGui interface. Very very heavily in
 ## 💬 Support
 
 For issues or feature requests: [joshadambell.com](https://joshadambell.com)
+
+<img width="3295" height="1135" alt="Screenshot 2025-09-10 121350" src="https://github.com/user-attachments/assets/67a14229-5f35-4a71-a101-c22344cc1c7f" />
