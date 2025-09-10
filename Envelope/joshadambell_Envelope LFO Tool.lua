@@ -68,6 +68,7 @@ local LFO = {
     rateEnvelope = {{0.0, 1.0}, {1.0, 1.0}}, -- 1.0 = 100% of slider value
     amplitudeEnvelope = {{0.0, 1.0}, {1.0, 1.0}}, -- 1.0 = 100% of slider value
     centerEnvelope = {{0.0, 1.0}, {1.0, 1.0}}, -- 1.0 = 100% of slider value
+    customShapeEnvelope = {{0.0, 0.5}, {0.25, 1.0}, {0.5, 0.0}, {0.75, 1.0}, {1.0, 0.5}}, -- Custom LFO shape (0.0-1.0 range)
     
     -- Target envelope info
     targetEnv = nil,
@@ -88,7 +89,8 @@ local shapes = {
     "Saw Up",
     "Square",
     "Triangle",
-    "Sine-ish"
+    "Sine-ish",
+    "Custom"
 }
 
 -- Original shape functions (preserved from LFO_Tool.lua)
@@ -254,7 +256,10 @@ function draw_help_window()
             ImGui.TextColored(ctx, 0xFF00FFFF, 'Features:')
             ImGui.Text(ctx, '• Auto Apply: Real-time LFO updates')
             ImGui.Text(ctx, '• Color-coded parameters for easy identification')
-            ImGui.Text(ctx, '• 6 LFO shapes: Bezier, Saw Down/Up, Square, Triangle, Sine')
+            ImGui.Text(ctx, '• 7 LFO shapes: Bezier, Saw Down/Up, Square, Triangle, Sine, Custom')
+            ImGui.Text(ctx, '• Custom Shape: Draw your own LFO waveform with envelope editor')
+            ImGui.Text(ctx, '• Envelope Editing: Left-click to add/drag, Shift+drag for multi-points')
+            ImGui.Text(ctx, '• Right-click to delete points, Shift+right-drag for multi-delete')
             ImGui.Text(ctx, '• Undo support: Ctrl+Z to revert changes')
             ImGui.Text(ctx, '• Reset: Restore all parameters to defaults')
             
@@ -554,8 +559,13 @@ function draw_single_envelope_editor(envelope_type, envelope_data, canvas_size, 
     
     -- Get value range for current envelope type
     local function get_envelope_range()
-        -- All envelopes use 0.0-2.0 range as they are multipliers
-        return 0.0, 2.0
+        if envelope_type == 'custom_shape' then
+            -- Custom shape uses 0.0-1.0 range as it represents the actual LFO waveform
+            return 0.0, 1.0
+        else
+            -- All other envelopes use 0.0-2.0 range as they are multipliers
+            return 0.0, 2.0
+        end
     end
     
     -- Convert mouse position to envelope coordinates
@@ -831,17 +841,19 @@ function draw_single_envelope_editor(envelope_type, envelope_data, canvas_size, 
         end
     end
     
-    -- Value range labels (all envelopes now use 0.0-2.0 multiplier range)
+    -- Value range labels
     local label_color = 0xFF888888
+    local min_val, max_val = get_envelope_range()
+    local mid_val = (min_val + max_val) / 2
     
-    -- Top value (2.0)
-    ImGui.DrawList_AddText(draw_list, canvas_pos[1] - 30, canvas_pos[2] - 5, label_color, '2.0')
+    -- Top value
+    ImGui.DrawList_AddText(draw_list, canvas_pos[1] - 30, canvas_pos[2] - 5, label_color, string.format('%.1f', max_val))
     
-    -- Middle value (1.0)
-    ImGui.DrawList_AddText(draw_list, canvas_pos[1] - 30, canvas_pos[2] + canvas_size[2]/2 - 5, label_color, '1.0')
+    -- Middle value
+    ImGui.DrawList_AddText(draw_list, canvas_pos[1] - 30, canvas_pos[2] + canvas_size[2]/2 - 5, label_color, string.format('%.1f', mid_val))
     
-    -- Bottom value (0.0)
-    ImGui.DrawList_AddText(draw_list, canvas_pos[1] - 30, canvas_pos[2] + canvas_size[2] - 5, label_color, '0.0')
+    -- Bottom value
+    ImGui.DrawList_AddText(draw_list, canvas_pos[1] - 30, canvas_pos[2] + canvas_size[2] - 5, label_color, string.format('%.1f', min_val))
 end
 
 -- Draw all three envelope editors side by side
@@ -851,11 +863,20 @@ function draw_envelope_editors()
     -- Calculate envelope editor sizes
     local content_width, content_height = ImGui.GetContentRegionAvail(ctx)
     local spacing = 10
+    
+    -- Check if custom shape is selected to adjust layout
+    local show_custom = (LFO.currentShape == 7)
+    local num_rows = show_custom and 2 or 1 -- 2 rows if custom shape, 1 row otherwise
+    
+    -- Calculate dimensions based on layout
     local available_width = content_width - (2 * spacing) -- Account for spacing between 3 editors
     local single_width = math.max(200, math.floor(available_width / 3)) -- Minimum 200px per editor
     
-    -- Calculate height
-    local envelope_height = math.max(150, content_height - 40) -- Min 150px, no max limit, leave 40px padding
+    -- Calculate height - split available height between rows if custom shape is shown
+    local total_envelope_height = math.max(300, content_height - 40) -- Min 300px total, leave 40px padding
+    local row_height = math.floor(total_envelope_height / num_rows) - (num_rows > 1 and spacing or 0)
+    local envelope_height = math.max(120, row_height) -- Min 120px per editor
+    
     local single_canvas_size = {single_width, envelope_height}
     
     -- Check minimum window size
@@ -899,6 +920,24 @@ function draw_envelope_editors()
     end
     ImGui.EndChild(ctx)
     ImGui.PopStyleColor(ctx, 1)
+    
+    -- Custom Shape Editor (only show when Custom shape is selected)
+    if show_custom then
+        -- Add spacing between rows
+        ImGui.Dummy(ctx, 0, spacing)
+        
+        -- Custom shape gets full width in its own row
+        local custom_width = content_width
+        local custom_canvas_size = {custom_width, envelope_height}
+        
+        local custom_bg_color = 0xFF6A0D6A30  -- Purple background (semi-transparent)
+        ImGui.PushStyleColor(ctx, ImGui.Col_ChildBg, custom_bg_color)
+        if ImGui.BeginChild(ctx, 'custom_shape_child', custom_width, child_height) then
+            draw_single_envelope_editor('custom_shape', LFO.customShapeEnvelope, custom_canvas_size, 'Custom LFO Shape', 'custom_shape')
+            ImGui.EndChild(ctx)
+        end
+        ImGui.PopStyleColor(ctx, 1)
+    end
     
     -- Instructions moved to Help section for cleaner layout
 end
@@ -1010,7 +1049,13 @@ function generate_lfo_points(duration)
             else
                 lfo_amplitude = 3.0 - 4.0 * phase_norm
             end
-        else -- Default to sine
+        elseif LFO.currentShape == 7 then -- Custom shape
+            local phase_norm = (current_phase % (2 * math.pi)) / (2 * math.pi) -- 0 to 1
+            -- Evaluate custom shape envelope at this phase position
+            local custom_value = evaluate_envelope(LFO.customShapeEnvelope, phase_norm)
+            -- Convert from 0.0-1.0 range to -1.0 to 1.0 range for LFO amplitude
+            lfo_amplitude = (custom_value - 0.5) * 2.0
+        else -- Default to sine (shape 6)
             lfo_amplitude = math.sin(current_phase)
         end
         
@@ -1166,20 +1211,26 @@ function reset_parameters()
     LFO.rateEnvelope = {{0.0, 1.0}, {1.0, 1.0}}
     LFO.amplitudeEnvelope = {{0.0, 1.0}, {1.0, 1.0}}
     LFO.centerEnvelope = {{0.0, 1.0}, {1.0, 1.0}}
+    -- Reset custom shape to interesting default wave
+    LFO.customShapeEnvelope = {{0.0, 0.5}, {0.25, 1.0}, {0.5, 0.0}, {0.75, 1.0}, {1.0, 0.5}}
     
     -- Clear any drag states
     LFO.draggedNode_rate = nil
     LFO.draggedNode_amplitude = nil
     LFO.draggedNode_center = nil
+    LFO.draggedNode_custom_shape = nil
     LFO.draggedNode_rate_multi_draw = nil
     LFO.draggedNode_amplitude_multi_draw = nil
     LFO.draggedNode_center_multi_draw = nil
+    LFO.draggedNode_custom_shape_multi_draw = nil
     LFO.draggedNode_rate_multi_delete = nil
     LFO.draggedNode_amplitude_multi_delete = nil
     LFO.draggedNode_center_multi_delete = nil
+    LFO.draggedNode_custom_shape_multi_delete = nil
     LFO.draggedNode_rate_last_delete_pos = nil
     LFO.draggedNode_amplitude_last_delete_pos = nil
     LFO.draggedNode_center_last_delete_pos = nil
+    LFO.draggedNode_custom_shape_last_delete_pos = nil
     
     -- Apply reset values to envelope if auto-apply is enabled
     if LFO.autoApply then
@@ -1189,9 +1240,8 @@ end
 
 -- Main GUI loop
 function main_loop()
-    -- Window size constraints
-    -- Minimum: 1080 x 850, allow unlimited growth
-    ImGui.SetNextWindowSizeConstraints(ctx, 1100, 875, math.huge, math.huge)
+    -- Window size constraints - adjust minimum height when custom shape is selected
+    ImGui.SetNextWindowSizeConstraints(ctx, 1040, 1040, math.huge, math.huge)
     
     -- Set window background to be opaque
     ImGui.SetNextWindowBgAlpha(ctx, 1.0)
@@ -1236,7 +1286,7 @@ function init()
     -- Set initial window size to accommodate three envelope editors side by side
     -- Width: 3 envelope editors (400 each) + 2 spacings (10 each) + padding + slider labels = ~1350
     -- Height: 850
-    ImGui.SetNextWindowSize(ctx, 1350, 850, ImGui.Cond_FirstUseEver)
+    ImGui.SetNextWindowSize(ctx, 1040, 1040, ImGui.Cond_FirstUseEver)
     main_loop()
 end
 
