@@ -6,7 +6,7 @@ Batch rename items and tracks with live preview. GUI-based tool with find/replac
 
 ## 🛠️ Requirements
 
-- ReaImGui extension (install via ReaPack)
+- "ReaImGui: ReaScript binding for Dear ImGui extension" from the repository: https://github.com/ReaTeam/Extensions/raw/master/index.xml)
 
 ## 📦 Setup
 
