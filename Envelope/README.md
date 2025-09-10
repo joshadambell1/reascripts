@@ -47,4 +47,4 @@ LFO Generator for Reaper Envelopes with ReaImGui interface. Very very heavily in
 
 For issues or feature requests: [joshadambell.com](https://joshadambell.com)
 
-<img width="1044" height="420" alt="Screenshot 2025-09-10 121550" src="https://github.com/user-attachments/assets/df914b80-eb16-42fb-ae98-03d5385ea4c9" />
+<img width="3295" height="1135" alt="Screenshot 2025-09-10 121350" src="https://github.com/user-attachments/assets/67a14229-5f35-4a71-a101-c22344cc1c7f" />
