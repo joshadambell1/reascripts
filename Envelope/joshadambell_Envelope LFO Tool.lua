@@ -57,6 +57,10 @@ local LFO = {
     -- Bezier tension parameter
     bezierTension = 0.5, -- 0.0 = linear, 1.0 = maximum curve
     
+    -- Fade parameters
+    fadeIn = 0.0, -- Fade in percentage (0.0-1.0)
+    fadeOut = 0.0, -- Fade out percentage (0.0-1.0)
+    
     -- Shape selection
     currentShape = 1,
     
@@ -201,13 +205,15 @@ function draw_help_window()
             
             -- Parameter controls
             ImGui.TextColored(ctx, 0xFF00FFFF, 'Parameter Controls:')
-            ImGui.Text(ctx, 'Rate: LFO frequency (0.01-50.0 Hz)')
-            ImGui.Text(ctx, 'Amplitude: LFO intensity (0.0-2.0)')
+            ImGui.Text(ctx, 'Rate: LFO frequency (0.01-50.0 Hz) - power curve slider')
+            ImGui.Text(ctx, 'Amplitude: LFO intensity (0.0-2.0) - power curve slider')
             ImGui.Text(ctx, 'Center: Oscillation center point (0.0-1.0)')
             ImGui.Text(ctx, 'Phase: Starting phase offset (0.0-1.0)')
             ImGui.Text(ctx, 'Randomness: Add variation to each parameter')
             ImGui.Text(ctx, 'Resolution: Points per second (20-2000)')
             ImGui.Text(ctx, 'Bezier Tension: Curve smoothing (Bezier shape only)')
+            ImGui.Text(ctx, 'Fade In: Amplitude taper from start (0-100%)')
+            ImGui.Text(ctx, 'Fade Out: Amplitude taper to end (100-0% - drag right for more fade)')
             
             ImGui.Separator(ctx)
             
@@ -310,6 +316,10 @@ function draw_parameters()
     
     if rate_changed then
         LFO.rate = slider_pos_to_value(LFO.rate_slider_pos, rate_min, rate_max, rate_power)
+        -- Auto apply if enabled during drag
+        if LFO.autoApply then
+            apply_lfo()
+        end
     end
     ImGui.PopStyleColor(ctx, 3)
     
@@ -319,6 +329,9 @@ function draw_parameters()
     ImGui.PushStyleColor(ctx, ImGui.Col_FrameBgActive, rate_bg_color | 0x44000000)
     local rate_rand_changed
     rate_rand_changed, LFO.rateRandomness = ImGui.SliderDouble(ctx, 'Rate Randomness', LFO.rateRandomness, 0.0, 1.0, '%.3f')
+    if rate_rand_changed and LFO.autoApply then
+        apply_lfo()
+    end
     ImGui.PopStyleColor(ctx, 3)
     
     -- Amplitude parameters
@@ -343,6 +356,10 @@ function draw_parameters()
     
     if amplitude_changed then
         LFO.amplitude = slider_pos_to_value(LFO.amplitude_slider_pos, amplitude_min, amplitude_max, amplitude_power)
+        -- Auto apply if enabled during drag
+        if LFO.autoApply then
+            apply_lfo()
+        end
     end
     ImGui.PopStyleColor(ctx, 3)
     
@@ -352,6 +369,9 @@ function draw_parameters()
     ImGui.PushStyleColor(ctx, ImGui.Col_FrameBgActive, amplitude_bg_color | 0x44000000)
     local amp_rand_changed
     amp_rand_changed, LFO.amplitudeRandomness = ImGui.SliderDouble(ctx, 'Amplitude Randomness', LFO.amplitudeRandomness, 0.0, 1.0, '%.3f')
+    if amp_rand_changed and LFO.autoApply then
+        apply_lfo()
+    end
     ImGui.PopStyleColor(ctx, 3)
     
     -- Center parameters
@@ -364,6 +384,9 @@ function draw_parameters()
     ImGui.PushStyleColor(ctx, ImGui.Col_FrameBgActive, center_bg_color | 0x44000000)
     local center_changed
     center_changed, LFO.center = ImGui.SliderDouble(ctx, 'Center', LFO.center, 0.0, 1.0, '%.3f')
+    if center_changed and LFO.autoApply then
+        apply_lfo()
+    end
     ImGui.PopStyleColor(ctx, 3)
     
     ImGui.SetNextItemWidth(ctx, slider_width)
@@ -372,6 +395,9 @@ function draw_parameters()
     ImGui.PushStyleColor(ctx, ImGui.Col_FrameBgActive, center_bg_color | 0x44000000)
     local center_rand_changed
     center_rand_changed, LFO.centerRandomness = ImGui.SliderDouble(ctx, 'Center Randomness', LFO.centerRandomness, 0.0, 1.0, '%.3f')
+    if center_rand_changed and LFO.autoApply then
+        apply_lfo()
+    end
     ImGui.PopStyleColor(ctx, 3)
     
     -- Phase parameter (keep default color)
@@ -381,6 +407,9 @@ function draw_parameters()
     ImGui.SetNextItemWidth(ctx, slider_width)
     local phase_changed
     phase_changed, LFO.phase = ImGui.SliderDouble(ctx, 'Phase', LFO.phase, 0.0, 1.0, '%.3f')
+    if phase_changed and LFO.autoApply then
+        apply_lfo()
+    end
     
     -- Resolution parameter
     ImGui.Separator(ctx)
@@ -389,6 +418,9 @@ function draw_parameters()
     ImGui.SetNextItemWidth(ctx, slider_width)
     local resolution_changed
     resolution_changed, LFO.resolution = ImGui.SliderInt(ctx, 'Points per Second', LFO.resolution, 20, 2000, '%d pts/sec')
+    if resolution_changed and LFO.autoApply then
+        apply_lfo()
+    end
     
     -- Bezier tension parameter (only show when Bezier shape is selected)
     local bezier_changed = false
@@ -398,6 +430,35 @@ function draw_parameters()
         
         ImGui.SetNextItemWidth(ctx, slider_width)
         bezier_changed, LFO.bezierTension = ImGui.SliderDouble(ctx, 'Bezier Tension', LFO.bezierTension, 0.0, 1.0, '%.3f')
+        if bezier_changed and LFO.autoApply then
+            apply_lfo()
+        end
+    end
+    
+    -- Fade parameters
+    ImGui.Separator(ctx)
+    ImGui.Text(ctx, 'Fade')
+    
+    ImGui.SetNextItemWidth(ctx, slider_width)
+    local fade_in_changed
+    local fade_in_percent = LFO.fadeIn * 100
+    fade_in_changed, fade_in_percent = ImGui.SliderDouble(ctx, 'Fade In', fade_in_percent, 0.0, 100.0, '%.1f%%')
+    if fade_in_changed then
+        LFO.fadeIn = fade_in_percent / 100.0
+        if LFO.autoApply then
+            apply_lfo()
+        end
+    end
+    
+    ImGui.SetNextItemWidth(ctx, slider_width)
+    local fade_out_changed
+    local fade_out_percent = LFO.fadeOut * 100
+    fade_out_changed, fade_out_percent = ImGui.SliderDouble(ctx, 'Fade Out', fade_out_percent, 100.0, 0.0, '%.1f%%')
+    if fade_out_changed then
+        LFO.fadeOut = fade_out_percent / 100.0
+        if LFO.autoApply then
+            apply_lfo()
+        end
     end
     
     -- Auto Apply checkbox and buttons on same line
@@ -420,10 +481,7 @@ function draw_parameters()
         reset_parameters()
     end
     
-    -- If any parameter changed and auto apply is on, apply the LFO
-    if LFO.autoApply and (rate_changed or amplitude_changed or center_changed or phase_changed or rate_rand_changed or amp_rand_changed or center_rand_changed or resolution_changed or bezier_changed or auto_changed) then
-        apply_lfo()
-    end
+    -- Real-time auto-apply is now handled individually for each parameter change
 end
 
 function draw_shape_selector()
@@ -654,6 +712,10 @@ function draw_single_envelope_editor(envelope_type, envelope_data, canvas_size, 
                     
                     table.insert(envelope_data, insert_idx, {env_x, env_y})
                     LFO[drag_key] = insert_idx
+                    -- Auto apply if enabled during multi-draw
+                    if LFO.autoApply then
+                        apply_lfo()
+                    end
                 end
             else
                 -- Shift released, switch to normal drag mode
@@ -664,6 +726,11 @@ function draw_single_envelope_editor(envelope_type, envelope_data, canvas_size, 
             -- Update dragged node position
             envelope_data[LFO[drag_key]][1] = env_x
             envelope_data[LFO[drag_key]][2] = env_y
+            
+            -- Auto apply if enabled during drag
+            if LFO.autoApply then
+                apply_lfo()
+            end
             
             -- Keep envelope sorted by x (but allow first and last to stay at edges)
             if LFO[drag_key] > 1 and LFO[drag_key] < #envelope_data then
@@ -715,12 +782,7 @@ function draw_single_envelope_editor(envelope_type, envelope_data, canvas_size, 
     
     -- Stop dragging on mouse release
     if mouse_released then
-        if LFO[drag_key] then
-            -- Auto apply if enabled when finishing drag
-            if LFO.autoApply then
-                apply_lfo()
-            end
-        end
+        -- Auto-apply is now handled in real-time during drag, no need to apply again on release
         LFO[drag_key] = nil
         LFO[drag_key .. '_multi_draw'] = nil
     end
@@ -972,6 +1034,23 @@ function generate_lfo_points(duration)
             final_center = final_center * center_multiplier
         end
         
+        -- Apply fade in/out modulation
+        local fade_multiplier = 1.0
+        
+        -- Fade in: 0.0 to 1.0 over first fadeIn percentage of duration
+        if LFO.fadeIn > 0 and time_pos <= LFO.fadeIn then
+            fade_multiplier = fade_multiplier * (time_pos / LFO.fadeIn)
+        end
+        
+        -- Fade out: 1.0 to 0.0 over last fadeOut percentage of duration
+        if LFO.fadeOut > 0 and time_pos >= (1.0 - LFO.fadeOut) then
+            local fade_out_start = 1.0 - LFO.fadeOut
+            local fade_progress = (time_pos - fade_out_start) / LFO.fadeOut
+            fade_multiplier = fade_multiplier * (1.0 - fade_progress)
+        end
+        
+        final_amplitude = final_amplitude * fade_multiplier
+        
         -- Calculate final value: Center ± (amplitude/2 * LFO_wave)
         -- Center=0.5, Amp=0.8 should give range 0.1 to 0.9 (0.5 ± 0.4)
         -- Symmetric oscillation around center point
@@ -1010,8 +1089,9 @@ function apply_lfo()
     -- Start undo block
     reaper.Undo_BeginBlock()
     
-    -- Clear existing points in time range
-    reaper.DeleteEnvelopePointRange(LFO.targetEnv, LFO.timeStart, LFO.timeEnd)
+    -- Clear existing points in time range with small buffer to ensure clean edges
+    local buffer = 0.001 -- 1ms buffer
+    reaper.DeleteEnvelopePointRange(LFO.targetEnv, LFO.timeStart - buffer, LFO.timeEnd + buffer)
     
     -- Generate and insert new LFO points
     local duration = LFO.timeEnd - LFO.timeStart
@@ -1078,6 +1158,10 @@ function reset_parameters()
     -- Reset Bezier tension
     LFO.bezierTension = 0.5
     
+    -- Reset fade parameters
+    LFO.fadeIn = 0.0
+    LFO.fadeOut = 0.0
+    
     -- Reset envelope editors to default flat lines (1.0 = 100% multiplier)
     LFO.rateEnvelope = {{0.0, 1.0}, {1.0, 1.0}}
     LFO.amplitudeEnvelope = {{0.0, 1.0}, {1.0, 1.0}}
@@ -1107,7 +1191,7 @@ end
 function main_loop()
     -- Window size constraints
     -- Minimum: 1080 x 850, allow unlimited growth
-    ImGui.SetNextWindowSizeConstraints(ctx, 1080, 850, math.huge, math.huge)
+    ImGui.SetNextWindowSizeConstraints(ctx, 1100, 875, math.huge, math.huge)
     
     -- Set window background to be opaque
     ImGui.SetNextWindowBgAlpha(ctx, 1.0)
