@@ -6,7 +6,7 @@ LFO generation tools for REAPER automation envelopes.
 
 ### joshadambell_Envelope LFO Tool.lua
 
-**Requirements:** "ReaImGui: ReaScript binding for Dear ImGui extension" from the repository: https://github.com/ReaTeam/Extensions/raw/master/index.xml)
+**Requirements:** "ReaImGui: ReaScript binding for Dear ImGui extension" from the repository: https://github.com/ReaTeam/Extensions/raw/master/index.xml
 
 LFO Generator for Reaper Envelopes with ReaImGui interface. Very very heavily inspired by the classic juliansader LFO Tool.
 
