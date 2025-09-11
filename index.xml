@@ -134,13 +134,15 @@
     <link rel="website">https://joshadambell.com</link>
     <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 joshadambell - reascripts\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Game Audio and Audio Post tools for Reaper.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 This ReaPack repository contains scripts for audio post-production workflows, including batch renaming tools and Media Explorer spotting functionality.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Game Audio and Audio Post tools for REAPER.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Dependencies:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab ReaImGui extension (install via ReaPack)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab SWS Extensions (https://www.sws-extension.org/)\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b Scripts included:\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Item & Track Renamer - Batch rename with GUI, find/replace, prefixes, numbering\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Media Explorer Spotting Scripts - Replace Soundminer's DSP Rack functionality\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Envelope LFO Tool - LFO Generator for Reaper Envelopes with interactive envelope editing\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Ambient1 - Envelopes for Airports - Comprehensive modulation toolbox with 4 algorithms and dual randomization\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Track & Item Renamer - Batch rename with GUI\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Media Explorer Spotting - Preview through FX, place processed audio\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Envelope LFO Tool - Modern LFO generator with interactive editing\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Ambient1 - Organic modulation with 4 algorithms and XY pad\par}
 }]]></description>
   </metadata>
 </index>

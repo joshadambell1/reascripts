@@ -2,7 +2,9 @@
 
 Replaces Soundminer's "Spot through DSP Rack" functionality. Preview audio through FX and spot processed files onto your timeline.
 
-Takes the last played file from Media Explorer, processes it through FX on a preview track, then places the final item on your selected track at the cursor.
+## 🛠️ Dependencies
+
+- **SWS Extensions** - Download from https://www.sws-extension.org/
 
 **Author:** [joshadambell.com](https://joshadambell.com)
 

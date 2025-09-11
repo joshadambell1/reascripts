@@ -1167,9 +1167,24 @@ function apply_lfo()
         -- Try to get envelope scaling info from REAPER
         local br_env = reaper.BR_EnvAlloc(LFO.targetEnv, false)
         if br_env then
-            local _, _, _, _, _, _, detected_min, detected_max = reaper.BR_EnvGetProperties(br_env)
-            if detected_min and detected_max and detected_min ~= detected_max then
-                env_min, env_max = detected_min, detected_max
+            local _, _, _, _, _, _, detected_min, detected_max, _, type = reaper.BR_EnvGetProperties(br_env)
+
+            if type == 0 or type == 1 then
+                local retval, chunk = reaper.GetEnvelopeStateChunk(LFO.targetEnv, "", false)
+                if retval and chunk then
+                    chunk = chunk:gsub("VOLTYPE %d+\n", "")
+                    reaper.SetEnvelopeStateChunk(LFO.targetEnv, chunk, false)
+                end
+                
+                if detected_min and detected_max and detected_min ~= detected_max then
+                    env_min, env_max = detected_min, detected_max
+                else
+                    env_min, env_max = 0, 1
+                end
+            else
+                if detected_min and detected_max and detected_min ~= detected_max then
+                    env_min, env_max = detected_min, detected_max
+                end
             end
             reaper.BR_EnvFree(br_env, false)
         end

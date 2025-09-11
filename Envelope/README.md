@@ -2,11 +2,14 @@
 
 LFO generation tools for REAPER automation envelopes.
 
+## 🛠️ Dependencies
+
+- **"ReaImGui: ReaScript binding for Dear ImGui extension"** from the repository: https://github.com/ReaTeam/Extensions/raw/master/index.xml
+- **SWS Extensions** - Download from https://www.sws-extension.org/
+
 ## 🌊 LFO Tool
 
 ### joshadambell_Envelope LFO Tool.lua
-
-**Requirements:** "ReaImGui: ReaScript binding for Dear ImGui extension" from the repository: https://github.com/ReaTeam/Extensions/raw/master/index.xml
 
 LFO Generator for Reaper Envelopes with ReaImGui interface. Very very heavily inspired by the classic juliansader LFO Tool.
 
@@ -46,8 +49,6 @@ LFO Generator for Reaper Envelopes with ReaImGui interface. Very very heavily in
 ## 🌟 Ambient1 - Envelopes for Airports
 
 ### joshadambell_Ambient1 - Envelopes for Airports.lua
-
-**Requirements:** "ReaImGui: ReaScript binding for Dear ImGui extension" from the repository: https://github.com/ReaTeam/Extensions/raw/master/index.xml
 
 **A comprehensive toolbox for fast and interesting modulation on a macro scale to provide inspiration.** This organic envelope modulation generator features 4 sophisticated algorithms with professional parameter control, perfect for creating evolving parameter automation and long-form ambient textures.
 
