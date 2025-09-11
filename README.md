@@ -116,6 +116,45 @@ LFO Generator for Reaper Envelopes with modern ReaImGui interface. Very very hea
 
 **Requires:** ReaImGui extension (install via ReaPack)
 
+### 🌟 Ambient1 - Envelopes for Airports
+`Envelope/joshadambell_Ambient1 - Envelopes for Airports.lua`
+
+A comprehensive toolbox for fast and interesting modulation on a macro scale to provide inspiration. This organic envelope modulation generator features 4 sophisticated algorithms with professional parameter control, perfect for creating evolving parameter automation and long-form ambient textures.
+
+**Key Features:**
+- **4 Advanced Algorithms** - Fractal Curves, Sine Wave Interference, Generative Walk, L-Systems  
+- **22+ Lockable Parameters** - Comprehensive parameter control with individual locking
+- **XY Pad Control** - Interactive 280×280px pad with corner-based mapping for 4 organic character parameters
+- **Dual Randomization System** - Mild (±20% around center) and Extreme (full range) randomization
+- **Professional Integration** - REAPER envelope insertion with undo support and auto-apply
+- **Seeded Generation** - Reproducible patterns with manual seed control
+- **Eno Mode** - Optional retro color scheme as Easter egg
+
+**4 Algorithm Options:**
+- **Fractal Curves** - Self-similar recursive noise patterns (6 parameters)
+- **Sine Wave Interference** - Multiple sine waves with controlled beating patterns (5 parameters)  
+- **Generative Walk** - Rule-based segment movement with momentum physics (6 parameters)
+- **L-Systems** - Recursive string rewriting with organic growth patterns (7 parameters)
+
+**Control Bar Functions:**
+- **Reset** - Return unlocked parameters to defaults
+- **Randomise Seed** - Generate new random seed for pattern variation
+- **Randomise Params Mild** - Randomize parameters ±20% around middle values (subtle variations)
+- **Randomise Params Extreme** - Randomize parameters across full slider ranges (dramatic changes)
+- **Randomise All** - Randomize seed + all unlocked parameters (extreme mode)
+- **Eno Mode** - Toggle retro amber/brown/green color scheme
+
+**Usage:**
+1. Select automation envelope in REAPER
+2. Set time selection (recommended: 15-60+ seconds for macro-scale evolution)
+3. Choose algorithm and adjust algorithm-specific parameters
+4. Use XY pad for intuitive organic character control
+5. Apply mild or extreme randomization for inspiration  
+6. Fine-tune with core parameters (Intensity, Center, Range)
+7. Script auto-applies modulation with undo support
+
+**Requires:** ReaImGui extension (install via ReaPack)
+
 ## 💬 Support
 
 For issues or feature requests: [joshadambell.com](https://joshadambell.com)
