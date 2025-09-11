@@ -46,6 +46,8 @@ LFO Generator for Reaper Envelopes with ReaImGui interface. Very very heavily in
 - Shift+right-drag: Delete multiple points
 - Hover: View time/value tooltips
 
+<img width="3295" height="1135" alt="Screenshot 2025-09-10 121350" src="https://github.com/user-attachments/assets/67a14229-5f35-4a71-a101-c22344cc1c7f" />
+
 ## 🌟 Ambient1 - Envelopes for Airports
 
 ### joshadambell_Ambient1 - Envelopes for Airports.lua
@@ -116,8 +118,8 @@ Interactive 280×280px pad with corner-based parameter mapping:
 6. Fine-tune with core parameters (Intensity, Center, Range)
 7. Script auto-applies modulation with undo support
 
+<img width="1062" height="1239" alt="Screenshot 2025-09-11 190946" src="https://github.com/user-attachments/assets/1cb101a9-3d6b-4f45-be1b-cd886fd0b38e" />
+
 ## 💬 Support
 
 For issues or feature requests: [joshadambell.com](https://joshadambell.com)
-
-<img width="3295" height="1135" alt="Screenshot 2025-09-10 121350" src="https://github.com/user-attachments/assets/67a14229-5f35-4a71-a101-c22344cc1c7f" />
