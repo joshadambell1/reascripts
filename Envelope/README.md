@@ -1,4 +1,4 @@
-# Envelope Scripts
+# Envelope Toolkit
 
 LFO generation tools for REAPER automation envelopes.
 
