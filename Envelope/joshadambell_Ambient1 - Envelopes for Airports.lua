@@ -1007,11 +1007,19 @@ function draw_organic_xy_pad(pad_size)
     ImGui.DrawList_AddLine(draw_list, pad_pos[1], mid_y, pad_pos[1] + pad_size, mid_y, grid_color)
     
     -- Corner labels
-    local label_offset = 5
-    ImGui.DrawList_AddText(draw_list, pad_pos[1] + label_offset, pad_pos[2] + label_offset, text_color, 'C+F')  -- Top-left: Complexity + Flow
-    ImGui.DrawList_AddText(draw_list, pad_pos[1] + pad_size - 25, pad_pos[2] + label_offset, text_color, 'R+F')  -- Top-right: Randomness + Flow
-    ImGui.DrawList_AddText(draw_list, pad_pos[1] + label_offset, pad_pos[2] + pad_size - 15, text_color, 'C+P')  -- Bottom-left: Complexity + Peak
-    ImGui.DrawList_AddText(draw_list, pad_pos[1] + pad_size - 25, pad_pos[2] + pad_size - 15, text_color, 'R+P')  -- Bottom-right: Randomness + Peak
+    local label_offset = 3
+    local small_text_color = 0x999999FF
+    ImGui.DrawList_AddText(draw_list, pad_pos[1] + label_offset, pad_pos[2] + label_offset, small_text_color, 'Complexity')      -- Top-left
+    ImGui.DrawList_AddText(draw_list, pad_pos[1] + label_offset, pad_pos[2] + label_offset + 10, small_text_color, '+ Flow')     -- Top-left line 2
+    
+    ImGui.DrawList_AddText(draw_list, pad_pos[1] + pad_size - 50, pad_pos[2] + label_offset, small_text_color, 'Randomness')    -- Top-right
+    ImGui.DrawList_AddText(draw_list, pad_pos[1] + pad_size - 35, pad_pos[2] + label_offset + 10, small_text_color, '+ Flow')   -- Top-right line 2
+    
+    ImGui.DrawList_AddText(draw_list, pad_pos[1] + label_offset, pad_pos[2] + pad_size - 20, small_text_color, 'Complexity')     -- Bottom-left
+    ImGui.DrawList_AddText(draw_list, pad_pos[1] + label_offset, pad_pos[2] + pad_size - 10, small_text_color, '+ Peak Irreg')  -- Bottom-left line 2
+    
+    ImGui.DrawList_AddText(draw_list, pad_pos[1] + pad_size - 50, pad_pos[2] + pad_size - 20, small_text_color, 'Randomness')   -- Bottom-right
+    ImGui.DrawList_AddText(draw_list, pad_pos[1] + pad_size - 50, pad_pos[2] + pad_size - 10, small_text_color, '+ Peak Irreg') -- Bottom-right line 2
     
     -- Handle mouse interaction
     if pad_active then
