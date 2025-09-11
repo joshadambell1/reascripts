@@ -206,16 +206,15 @@ function draw_help_window()
             ImGui.Separator(ctx)
             
             -- Parameter controls
-            ImGui.TextColored(ctx, 0xFF00FFFF, 'Parameter Controls:')
-            ImGui.Text(ctx, 'Rate: LFO frequency (0.01-50.0 Hz) - power curve slider')
-            ImGui.Text(ctx, 'Amplitude: LFO intensity (0.0-2.0) - power curve slider')
-            ImGui.Text(ctx, 'Center: Oscillation center point (0.0-1.0)')
+            ImGui.TextColored(ctx, 0xFF00FFFF, 'Core Parameters:')
+            ImGui.Text(ctx, 'Rate: LFO frequency (0.01-50.0 Hz) with power curve slider')
+            ImGui.Text(ctx, 'Amplitude: LFO intensity (0.0-2.0) with power curve slider')
+            ImGui.Text(ctx, 'Center: Base oscillation center point (0.0-1.0)')
             ImGui.Text(ctx, 'Phase: Starting phase offset (0.0-1.0)')
-            ImGui.Text(ctx, 'Randomness: Add variation to each parameter')
-            ImGui.Text(ctx, 'Resolution: Points per second (20-2000)')
-            ImGui.Text(ctx, 'Bezier Tension: Curve smoothing (Bezier shape only)')
-            ImGui.Text(ctx, 'Fade In: Amplitude taper from start (0-100%)')
-            ImGui.Text(ctx, 'Fade Out: Amplitude taper to end (100-0% - drag right for more fade)')
+            ImGui.Text(ctx, 'Resolution: Curve point density (20-2000 points/second)')
+            ImGui.Text(ctx, 'Bézier Tension: Curve smoothness (Bézier shape only)')
+            ImGui.Text(ctx, 'Fade In/Out: Amplitude tapering at start/end')
+            ImGui.Text(ctx, 'Randomness: Add organic variation to Rate/Amplitude/Center')
             
             ImGui.Separator(ctx)
             
@@ -255,14 +254,15 @@ function draw_help_window()
             
             -- Features
             ImGui.TextColored(ctx, 0xFF00FFFF, 'Features:')
-            ImGui.Text(ctx, '• Auto Apply: Real-time LFO updates')
+            ImGui.Text(ctx, '• Auto Apply: Real-time LFO updates as you adjust parameters')
             ImGui.Text(ctx, '• Color-coded parameters for easy identification')
-            ImGui.Text(ctx, '• 7 LFO shapes: Bezier, Saw Down/Up, Square, Triangle, Sine, Custom')
+            ImGui.Text(ctx, '• 7 LFO shapes: Bézier, Saw Down/Up, Square, Triangle, Sine-ish, Custom')
             ImGui.Text(ctx, '• Custom Shape: Draw your own LFO waveform with envelope editor')
-            ImGui.Text(ctx, '• Envelope Editing: Left-click to add/drag, Shift+drag for multi-points')
-            ImGui.Text(ctx, '• Right-click to delete points, Shift+right-drag for multi-delete')
-            ImGui.Text(ctx, '• Undo support: Ctrl+Z to revert changes')
-            ImGui.Text(ctx, '• Reset: Restore all parameters to defaults')
+            ImGui.Text(ctx, '• Power Curve Sliders: Better control for Rate and Amplitude ranges')
+            ImGui.Text(ctx, '• Envelope Editing: Interactive visual control over parameter changes')
+            ImGui.Text(ctx, '• Parameter Randomization: Add organic variation to Rate/Amplitude/Center')
+            ImGui.Text(ctx, '• Volume Envelope Safety: Automatically handles different scaling types')
+            ImGui.Text(ctx, '• Undo support: All operations are fully undoable in REAPER')
             
             if ImGui.Button(ctx, 'Close') then
                 LFO.showHelp = false
