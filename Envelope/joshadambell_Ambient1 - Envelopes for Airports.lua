@@ -37,7 +37,7 @@ local ctx = ImGui.CreateContext('Macro Modulator v1.0')
 -- Global state
 local MACRO = {
     -- Core parameters
-    intensity = 0.15,        -- How much change (0.0-0.5 for subtlety)
+    intensity = 0.5,         -- How much change (0.0-1.0 for subtlety)
     duration = 30.0,         -- Evolution cycle length in seconds
     smoothness = 200,        -- Points per minute for ultra-smooth curves
     center = 0.5,           -- Center point for evolution
@@ -67,11 +67,11 @@ local MACRO = {
     
     -- Algorithm-specific parameters (all set to midpoint of slider ranges)
     fractal = {
-        octaves = 5,               -- 0 - 10 (midpoint: 5)
-        persistence = 0.5,         -- 0.0 - 1.0 (midpoint: 0.5)
-        frequency_scale = 5.5,    -- 1.0 - 50.0 (midpoint: 25.5)
-        lacunarity = 0.5,         -- 0.5 - 5.0 (midpoint: 2.75)
-        amplitude_bias = 1.255     -- 0.01 - 2.5 (midpoint: 1.255)
+        octaves = 9,               -- 0 - 10 (default: 9)
+        persistence = 0.4,         -- 0.0 - 1.0 (default: 0.4)
+        frequency_scale = 10.0,    -- 1.0 - 20.0 (default: 10.0)
+        lacunarity = 0.7,          -- 0.5 - 5.0 (default: 0.7)
+        amplitude_bias = 1.9       -- 0.01 - 2.5 (default: 1.9)
     },
     
     cellular = {
@@ -83,11 +83,10 @@ local MACRO = {
     },
     
     generative = {
-        segment_length = 0.525,    -- 0.05 - 1.0 (midpoint: 0.525)
-        smoothing_factor = 25.005, -- 0.01 - 50.0 (midpoint: 25.005)
-        variation_scale = 0.005,   -- 0.01 - 1.0 (midpoint: 0.505)
-        momentum = 0.7,          -- 0.01 - 4.0 (midpoint: 2.005)
-        bias_direction = 0.0       -- -1.0 - 1.0 (midpoint: 0.0)
+        segment_length = 0.2,      -- 0.01 - 0.3 (default: 0.2)
+        smoothing_factor = 21.0,   -- 0.01 - 50.0 (default: 21.0)
+        variation_scale = 0.03,    -- 0.01 - 0.05 (default: 0.03)
+        momentum = 0.075           -- 0.001 - 0.1 (default: 0.075)
     },
     
     -- Parameter locking system
@@ -310,9 +309,6 @@ function generate_base_algorithm(time_pos, current_seed)
         local segment_start, _ = seeded_random(segment_seed, -MACRO.generative.variation_scale, MACRO.generative.variation_scale)
         local segment_end, _ = seeded_random(segment_seed + 1, -MACRO.generative.variation_scale, MACRO.generative.variation_scale)
         
-        -- Apply bias direction
-        segment_start = segment_start + MACRO.generative.bias_direction * 0.3
-        segment_end = segment_end + MACRO.generative.bias_direction * 0.3
         
         -- User-controlled interpolation smoothness
         local smooth_t
@@ -346,33 +342,74 @@ function generate_base_algorithm(time_pos, current_seed)
     return math.max(-1, math.min(1, base_value))
 end
 
+-- Get algorithm-specific frequency multiplier using all 5 parameters
+function get_algorithm_frequency_multiplier()
+    if MACRO.currentAlgorithm == 1 then -- Fractal Curves
+        -- Combine all 5 fractal parameters into frequency scaling
+        local octaves_factor = MACRO.fractal.octaves / 10.0                    -- 0.0-1.0
+        local persistence_factor = MACRO.fractal.persistence                   -- 0.0-1.0  
+        local freq_factor = (MACRO.fractal.frequency_scale - 1.0) / 19.0       -- 0.0-1.0
+        local lacunarity_factor = (MACRO.fractal.lacunarity - 0.5) / 4.5       -- 0.0-1.0
+        local bias_factor = (MACRO.fractal.amplitude_bias - 0.01) / 2.49       -- 0.0-1.0
+        
+        -- Weight them differently for interesting interactions
+        local composite = (octaves_factor * 0.3) + (persistence_factor * 0.2) + 
+                         (freq_factor * 0.3) + (lacunarity_factor * 0.1) + (bias_factor * 0.1)
+        return 0.3 + composite * 1.7  -- Range: 0.3x to 2.0x
+        
+    elseif MACRO.currentAlgorithm == 2 then -- Cellular Automata
+        local evolution_factor = MACRO.cellular.evolution_rate / 0.4           -- 0.0125-1.0
+        local activation_factor = (MACRO.cellular.random_activation - 0.01) / 0.79  -- 0.0-1.0
+        local smoothing_factor = (MACRO.cellular.smoothing_window - 2) / 38    -- 0.0-1.0
+        local cell_factor = (MACRO.cellular.cell_count - 32) / 480             -- 0.0-1.0
+        local rule_factor = MACRO.cellular.rule_variation / 4.0                -- 0.0-1.0
+        
+        local composite = (evolution_factor * 0.3) + (activation_factor * 0.2) + 
+                         (smoothing_factor * 0.2) + (cell_factor * 0.2) + (rule_factor * 0.1)
+        return 0.4 + composite * 1.6  -- Range: 0.4x to 2.0x
+        
+    elseif MACRO.currentAlgorithm == 3 then -- Generative Walk
+        local segment_factor = (0.3 - MACRO.generative.segment_length) / 0.29    -- Inverted: shorter = higher
+        local smooth_factor = MACRO.generative.smoothing_factor / 50.0           -- 0.0002-1.0
+        local variation_factor = (MACRO.generative.variation_scale - 0.01) / 0.04 -- 0.0-1.0
+        local momentum_factor = (MACRO.generative.momentum - 0.001) / 0.099      -- 0.0-1.0
+        
+        local composite = (segment_factor * 0.35) + (smooth_factor * 0.25) + 
+                         (variation_factor * 0.2) + (momentum_factor * 0.2)
+        return 0.5 + composite * 1.5  -- Range: 0.5x to 2.0x
+    end
+    
+    return 1.0 -- Fallback
+end
+
 -- STEP 2: Apply character parameters that modify behavior
 function apply_character_parameters(base_value, time_pos, current_seed)
     local modified_value = base_value
+    local freq_multiplier = get_algorithm_frequency_multiplier()
     
     -- Complexity: Add detail layers (MUCH REDUCED)
     if MACRO.complexity > 0 then
-        local detail1 = smooth_noise(time_pos * 1.618, current_seed + 2000) * 0.08 * MACRO.complexity
-        local detail2 = smooth_noise(time_pos * 7.389, current_seed + 3000) * 0.05 * MACRO.complexity
-        local detail3 = smooth_noise(time_pos * 13.42, current_seed + 4000) * 0.03 * MACRO.complexity
+        local detail1 = smooth_noise(time_pos * 1.618 * freq_multiplier, current_seed + 2000) * 0.08 * MACRO.complexity
+        local detail2 = smooth_noise(time_pos * 7.389 * freq_multiplier, current_seed + 3000) * 0.05 * MACRO.complexity
+        local detail3 = smooth_noise(time_pos * 13.42 * freq_multiplier, current_seed + 4000) * 0.03 * MACRO.complexity
         modified_value = modified_value + detail1 + detail2 + detail3
     end
     
     -- Peak Irregularity: Combines time warping + peak events (REDUCED)
     if MACRO.peak_irregularity > 0 then
         -- Time warping component (smaller)
-        local warp_noise1 = smooth_noise(time_pos * 0.7, current_seed + 5000)
-        local warp_noise2 = smooth_noise(time_pos * 2.3, current_seed + 6000) * 0.6
+        local warp_noise1 = smooth_noise(time_pos * 0.7 * freq_multiplier, current_seed + 5000)
+        local warp_noise2 = smooth_noise(time_pos * 2.3 * freq_multiplier, current_seed + 6000) * 0.6
         local time_warp_factor = 1.0 + (warp_noise1 + warp_noise2) * MACRO.peak_irregularity * 0.2
         time_warp_factor = math.max(0.7, math.min(1.5, time_warp_factor))
         
         -- Apply warping (much smaller effect)
-        local warped_interference = smooth_noise(time_pos * 5.196 * time_warp_factor, current_seed + 7000)
+        local warped_interference = smooth_noise(time_pos * 5.196 * time_warp_factor * freq_multiplier, current_seed + 7000)
         modified_value = modified_value + warped_interference * MACRO.peak_irregularity * 0.1
         
         -- Peak events component (smaller)
-        local event_wave1 = smooth_noise(time_pos * 2.718, current_seed + 8000)
-        local event_wave2 = smooth_noise(time_pos * 5.439, current_seed + 9000) * 0.7
+        local event_wave1 = smooth_noise(time_pos * 2.718 * freq_multiplier, current_seed + 8000)
+        local event_wave2 = smooth_noise(time_pos * 5.439 * freq_multiplier, current_seed + 9000) * 0.7
         
         -- Create gradual event modulation (smaller effect)
         local event_strength = (event_wave1 + event_wave2) * MACRO.peak_irregularity * 0.15
@@ -386,11 +423,12 @@ end
 -- STEP 3: Apply scaling parameters for amplitude control
 function apply_scaling_parameters(modified_value, time_pos, point_index, existing_points, current_seed)
     local scaled_value = modified_value
+    local freq_multiplier = get_algorithm_frequency_multiplier()
     
     -- Complexity: Now includes drift amount - amplitude variation over time (REDUCED)
     if MACRO.complexity > 0 then
         -- Create drift multiplier that varies over time (smaller effect)
-        local drift_envelope = smooth_noise(time_pos * 1.5, current_seed + 10000) * 0.5 + 0.5 -- 0 to 1
+        local drift_envelope = smooth_noise(time_pos * 1.5 * freq_multiplier, current_seed + 10000) * 0.5 + 0.5 -- 0 to 1
         local drift_factor = 0.8 + (drift_envelope * MACRO.complexity * 0.2) -- 0.8 to 1.0 range (much smaller)
         scaled_value = scaled_value * drift_factor
     end
@@ -405,18 +443,18 @@ function apply_scaling_parameters(modified_value, time_pos, point_index, existin
         end
         
         -- Flow smoothness noise (much smaller)
-        local smoothing_noise = smooth_noise(time_pos * 20, current_seed + 11000) * MACRO.flow * 0.05
+        local smoothing_noise = smooth_noise(time_pos * 20 * freq_multiplier, current_seed + 11000) * MACRO.flow * 0.05
         scaled_value = scaled_value + smoothing_noise
     end
     
     -- Randomness: Combines unpredictability and turbulence (MUCH REDUCED)
     if MACRO.randomness > 0 then
         -- Micro-variations (smaller)
-        local micro_random = smooth_noise(time_pos * 25, current_seed + 12000) * MACRO.randomness * 0.08
+        local micro_random = smooth_noise(time_pos * 25 * freq_multiplier, current_seed + 12000) * MACRO.randomness * 0.08
         
         -- Fine-grain noise overlay (much smaller)
-        local turb1 = smooth_noise(time_pos * 40, current_seed + 13000) * MACRO.randomness * 0.05
-        local turb2 = smooth_noise(time_pos * 80, current_seed + 14000) * MACRO.randomness * 0.03
+        local turb1 = smooth_noise(time_pos * 40 * freq_multiplier, current_seed + 13000) * MACRO.randomness * 0.05
+        local turb2 = smooth_noise(time_pos * 80 * freq_multiplier, current_seed + 14000) * MACRO.randomness * 0.03
         
         scaled_value = scaled_value + micro_random + turb1 + turb2
     end
@@ -590,7 +628,7 @@ end
 function reset_macro_parameters()
     -- Reset core parameters (skip locked ones)
     if not MACRO.locked.intensity then
-        MACRO.intensity = 0.15
+        MACRO.intensity = 0.5
     end
     if not MACRO.locked.center then
         MACRO.center = 0.5
@@ -610,7 +648,7 @@ function reset_macro_parameters()
         MACRO.flow = math.random() * 2.5 + 0.5  -- 0.5-3.0
     end
     if not MACRO.locked.randomness then
-        MACRO.randomness = math.random() * 2.5 + 0.5  -- 0.5-3.0
+        MACRO.randomness = 1.5  -- Default randomness value
     end
     if not MACRO.locked.peak_irregularity then
         MACRO.peak_irregularity = math.random() * 0.5 + 0.2  -- 0.2-0.7
@@ -621,39 +659,106 @@ function reset_macro_parameters()
     
     -- Reset algorithm-specific parameters to defaults (skip locked ones)
     if not MACRO.locked.algo_param1 then
-        MACRO.fractal.octaves = 5
+        MACRO.fractal.octaves = 9
         MACRO.cellular.evolution_rate = 0.2025
-        MACRO.generative.segment_length = 0.525
+        MACRO.generative.segment_length = 0.2
         MACRO.algo_param1 = nil -- Reset slider value
     end
     
     if not MACRO.locked.algo_param2 then
-        MACRO.fractal.persistence = 0.5
+        MACRO.fractal.persistence = 0.4
         MACRO.cellular.random_activation = 0.405
-        MACRO.generative.smoothing_factor = 25.005
+        MACRO.generative.smoothing_factor = 21.0
         MACRO.algo_param2 = nil -- Reset slider value
     end
     
     if not MACRO.locked.algo_param3 then
-        MACRO.fractal.frequency_scale = 5.5
+        MACRO.fractal.frequency_scale = 10.0
         MACRO.cellular.smoothing_window = 21
-        MACRO.generative.variation_scale = 0.0105
+        MACRO.generative.variation_scale = 0.03
         MACRO.algo_param3 = nil -- Reset slider value
     end
     
     if not MACRO.locked.algo_param4 then
-        MACRO.fractal.lacunarity = 0.5
+        MACRO.fractal.lacunarity = 0.7
         MACRO.cellular.cell_count = 240
-        MACRO.generative.momentum = 0.7005
+        MACRO.generative.momentum = 0.075
         MACRO.algo_param4 = nil -- Reset slider value
     end
     
     if not MACRO.locked.algo_param5 then
-        MACRO.fractal.amplitude_bias = 1.255
+        MACRO.fractal.amplitude_bias = 1.9
         MACRO.cellular.rule_variation = 2.0
-        MACRO.generative.bias_direction = 0.0
         MACRO.algo_param5 = nil -- Reset slider value
     end
+end
+
+-- Helper function for randomness power curve mapping
+function map_randomness_value(slider_value)
+    -- Map 0.0-10.0 slider range with power curve:
+    -- First half (0.0-5.0) maps to 0.0-2.0
+    -- Second half (5.0-10.0) maps to 2.0-10.0
+    if slider_value <= 5.0 then
+        return (slider_value / 5.0) * 2.0  -- Linear mapping for first half
+    else
+        local normalized = (slider_value - 5.0) / 5.0  -- 0.0-1.0 for second half
+        return 2.0 + normalized * 8.0  -- 2.0-10.0 for second half
+    end
+end
+
+-- Helper function to reverse map randomness value for display
+function reverse_map_randomness_value(actual_value)
+    -- Convert actual randomness value back to slider position
+    if actual_value <= 2.0 then
+        return (actual_value / 2.0) * 5.0  -- 0.0-2.0 maps to 0.0-5.0
+    else
+        local normalized = (actual_value - 2.0) / 8.0  -- 0.0-1.0 for values 2.0-10.0
+        return 5.0 + normalized * 5.0  -- Maps to 5.0-10.0
+    end
+end
+
+-- Helper function for randomness slider with power curve
+function draw_randomness_slider(label, param_name, slider_width)
+    ImGui.SetNextItemWidth(ctx, slider_width)
+    
+    -- Style locked parameters
+    local is_locked = MACRO.locked[param_name]
+    if is_locked then
+        ImGui.PushStyleColor(ctx, ImGui.Col_FrameBg, 0xFF6B47AA)        -- Orange background for locked
+        ImGui.PushStyleColor(ctx, ImGui.Col_FrameBgHovered, 0xFF7B57BA) -- Slightly lighter on hover
+        ImGui.PushStyleColor(ctx, ImGui.Col_FrameBgActive, 0xFF5B379A)  -- Slightly darker when active
+    end
+    
+    -- Initialize parameter if it doesn't exist
+    if MACRO[param_name] == nil then
+        MACRO[param_name] = 1.5  -- Default randomness value
+    end
+    
+    -- Convert actual randomness value to slider position for internal slider mechanics
+    local slider_position = reverse_map_randomness_value(MACRO[param_name])
+    
+    -- Create a custom format string that shows the actual mapped value
+    local display_value = MACRO[param_name]
+    local format_string = string.format("%.1f", display_value)
+    
+    local changed, new_slider_value = ImGui.SliderDouble(ctx, label, slider_position, 0.0, 10.0, format_string)
+    
+    if changed then
+        -- Convert slider position back to actual randomness value
+        MACRO[param_name] = map_randomness_value(new_slider_value)
+    end
+    
+    -- Pop style colors if we pushed them
+    if is_locked then
+        ImGui.PopStyleColor(ctx, 3)
+    end
+    
+    -- Handle right-click for locking
+    if ImGui.IsItemClicked(ctx, ImGui.MouseButton_Right) then
+        MACRO.locked[param_name] = not MACRO.locked[param_name]
+    end
+    
+    return changed
 end
 
 -- Helper function for locked sliders
@@ -785,7 +890,7 @@ function draw_controls_bar()
             MACRO.flow = math.random() * 2.5 + 0.5  -- 0.5-3.0
         end
         if not MACRO.locked.randomness then
-            MACRO.randomness = math.random() * 2.5 + 0.5  -- 0.5-3.0
+            MACRO.randomness = math.random() * 3.0 + 0.5  -- 0.5-3.5 (will be mapped through power curve)
         end
         if not MACRO.locked.peak_irregularity then
             MACRO.peak_irregularity = math.random() * 0.5 + 0.2  -- 0.2-0.7
@@ -808,7 +913,7 @@ function draw_controls_bar()
                 MACRO.cellular.evolution_rate = math.random() * 0.395 + 0.005  -- 0.005-0.4
                 MACRO.algo_param1 = MACRO.cellular.evolution_rate
             elseif MACRO.currentAlgorithm == 3 then -- Generative Walk
-                MACRO.generative.segment_length = math.random() * 0.95 + 0.05  -- 0.05-1.0
+                MACRO.generative.segment_length = math.random() * 0.29 + 0.01  -- 0.01-0.3
                 MACRO.algo_param1 = MACRO.generative.segment_length
             end
         end
@@ -828,26 +933,26 @@ function draw_controls_bar()
         
         if not MACRO.locked.algo_param3 then
             if MACRO.currentAlgorithm == 1 then -- Fractal Curves
-                MACRO.fractal.frequency_scale = math.random() * 0.0 + 1.0  -- 1.0-50.0
+                MACRO.fractal.frequency_scale = math.random() * 19.0 + 1.0  -- 1.0-20.0
                 MACRO.algo_param3 = MACRO.fractal.frequency_scale
             elseif MACRO.currentAlgorithm == 2 then -- Cellular Automata
                 MACRO.cellular.smoothing_window = math.random(2, 40)  -- 2-40
                 MACRO.algo_param3 = MACRO.cellular.smoothing_window
             elseif MACRO.currentAlgorithm == 3 then -- Generative Walk
-                MACRO.generative.variation_scale = math.random() * 0.005 + 0.01  -- 0.01-1.0
+                MACRO.generative.variation_scale = math.random() * 0.04 + 0.01  -- 0.01-0.05
                 MACRO.algo_param3 = MACRO.generative.variation_scale
             end
         end
         
         if not MACRO.locked.algo_param4 then
             if MACRO.currentAlgorithm == 1 then -- Fractal Curves
-                MACRO.fractal.lacunarity = math.random() * 0.0 + 0.5  -- 0.5-5.0
+                MACRO.fractal.lacunarity = math.random() * 4.5 + 0.5  -- 0.5-5.0
                 MACRO.algo_param4 = MACRO.fractal.lacunarity
             elseif MACRO.currentAlgorithm == 2 then -- Cellular Automata
                 MACRO.cellular.cell_count = math.random(32, 512)  -- 32-512
                 MACRO.algo_param4 = MACRO.cellular.cell_count
             elseif MACRO.currentAlgorithm == 3 then -- Generative Walk
-                MACRO.generative.momentum = math.random() * 0.5 + 0.01  -- 0.01-4.0
+                MACRO.generative.momentum = math.random() * 0.099 + 0.001  -- 0.001-0.1
                 MACRO.algo_param4 = MACRO.generative.momentum
             end
         end
@@ -859,9 +964,6 @@ function draw_controls_bar()
             elseif MACRO.currentAlgorithm == 2 then -- Cellular Automata
                 MACRO.cellular.rule_variation = math.random() * 4.0  -- 0.0-4.0
                 MACRO.algo_param5 = MACRO.cellular.rule_variation
-            elseif MACRO.currentAlgorithm == 3 then -- Generative Walk
-                MACRO.generative.bias_direction = math.random() * 2.0 - 1.0  -- -1.0-1.0
-                MACRO.algo_param5 = MACRO.generative.bias_direction
             end
         end
         
@@ -937,7 +1039,7 @@ function draw_parameters()
         apply_macro_modulation()
     end
     
-    local randomness_changed = draw_locked_slider('Randomness', 'randomness', 0.0, 2.0, '%.3f', slider_width)
+    local randomness_changed = draw_randomness_slider('Randomness', 'randomness', slider_width)
     if randomness_changed and MACRO.autoApply and MACRO.targetEnv and MACRO.timeEnd > MACRO.timeStart then
         apply_macro_modulation()
     end
@@ -1017,7 +1119,7 @@ function draw_algorithm_parameters()
             apply_macro_modulation()
         end
         
-        local freq_changed = draw_locked_slider('Frequency Scale', 'algo_param3', 1.0, 10.0, '%.1f', slider_width)
+        local freq_changed = draw_locked_slider('Frequency Scale', 'algo_param3', 1.0, 20.0, '%.1f', slider_width)
         MACRO.fractal.frequency_scale = MACRO.algo_param3
         if freq_changed and MACRO.autoApply and MACRO.targetEnv and MACRO.timeEnd > MACRO.timeStart then
             apply_macro_modulation()
@@ -1083,9 +1185,8 @@ function draw_algorithm_parameters()
         if not MACRO.algo_param2 then MACRO.algo_param2 = MACRO.generative.smoothing_factor end
         if not MACRO.algo_param3 then MACRO.algo_param3 = MACRO.generative.variation_scale end
         if not MACRO.algo_param4 then MACRO.algo_param4 = MACRO.generative.momentum end
-        if not MACRO.algo_param5 then MACRO.algo_param5 = MACRO.generative.bias_direction end
         
-        local segment_changed = draw_locked_slider('Segment Length', 'algo_param1', 0.05, 1.0, '%.3f', slider_width)
+        local segment_changed = draw_locked_slider('Segment Length', 'algo_param1', 0.01, 0.3, '%.3f', slider_width)
         MACRO.generative.segment_length = MACRO.algo_param1
         if segment_changed and MACRO.autoApply and MACRO.targetEnv and MACRO.timeEnd > MACRO.timeStart then
             apply_macro_modulation()
@@ -1097,21 +1198,15 @@ function draw_algorithm_parameters()
             apply_macro_modulation()
         end
         
-        local variation_changed = draw_locked_slider('Variation Scale', 'algo_param3', 0.01, 0.02, '%.3f', slider_width)
+        local variation_changed = draw_locked_slider('Variation Scale', 'algo_param3', 0.01, 0.05, '%.3f', slider_width)
         MACRO.generative.variation_scale = MACRO.algo_param3
         if variation_changed and MACRO.autoApply and MACRO.targetEnv and MACRO.timeEnd > MACRO.timeStart then
             apply_macro_modulation()
         end
         
-        local momentum_changed = draw_locked_slider('Momentum', 'algo_param4', 0.01, 1.20, '%.2f', slider_width)
+        local momentum_changed = draw_locked_slider('Momentum', 'algo_param4', 0.001, 0.1, '%.3f', slider_width)
         MACRO.generative.momentum = MACRO.algo_param4
         if momentum_changed and MACRO.autoApply and MACRO.targetEnv and MACRO.timeEnd > MACRO.timeStart then
-            apply_macro_modulation()
-        end
-        
-        local bias_changed = draw_locked_slider('Bias Direction', 'algo_param5', -1.0, 1.0, '%.2f', slider_width)
-        MACRO.generative.bias_direction = MACRO.algo_param5
-        if bias_changed and MACRO.autoApply and MACRO.targetEnv and MACRO.timeEnd > MACRO.timeStart then
             apply_macro_modulation()
         end
     end
@@ -1146,7 +1241,10 @@ function draw_algorithm_selector()
                 MACRO.algo_param2 = nil
                 MACRO.algo_param3 = nil
                 MACRO.algo_param4 = nil
-                MACRO.algo_param5 = nil
+                -- Only reset algo_param5 for algorithms that use it (Fractal and Cellular)
+                if i == 1 or i == 2 then
+                    MACRO.algo_param5 = nil
+                end
             end
             
             -- Auto apply if enabled, but only if we have a valid envelope and time range
