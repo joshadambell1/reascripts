@@ -32,3 +32,9 @@ Organic modulation generator with 4 algorithms, XY pad control, and 22+ lockable
 **Detailed documentation available in each subfolder: `/Envelope`, `/Spotting`, `/Renaming`**
 
 **Author:** [joshadambell.com](https://joshadambell.com)
+
+![Ambient 1](https://github.com/user-attachments/assets/01d7f161-c0bb-40f6-b378-018346453a92)
+
+![Envelope LFO Tool](https://github.com/user-attachments/assets/fdb34fbc-e8a6-4fe6-990f-633a619d86cb)
+
+<img width="934" height="675" alt="image" src="https://github.com/user-attachments/assets/1f14b175-04d0-4395-a12a-0887770c61ff" />
