@@ -6,6 +6,9 @@ This ReaPack repository contains scripts for audio post-production workflows, in
 
 **Author:** [joshadambell.com](https://joshadambell.com)
 
+## 📝 KNOWN BUGS
+- Does not work with Volume envelopes. Works with everything else. Fix being worked on.
+
 ## 📦 Installation
 
 - Extensions → ReaPack → Import Repositories
