@@ -2,6 +2,8 @@
 
 Batch rename items and tracks with live preview. GUI-based tool with find/replace, prefix/suffix, character removal, and auto-numbering.
 
+<img width="934" height="675" alt="image" src="https://github.com/user-attachments/assets/9ec3615b-dfff-474b-80d5-5a64d734ff24" />
+
 **Author:** [joshadambell.com](https://joshadambell.com)
 
 ## 🛠️ Dependencies
