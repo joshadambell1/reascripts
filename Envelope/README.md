@@ -43,6 +43,67 @@ LFO Generator for Reaper Envelopes with ReaImGui interface. Very very heavily in
 - Shift+right-drag: Delete multiple points
 - Hover: View time/value tooltips
 
+## 🌟 Ambient1 - Envelopes for Airports
+
+### joshadambell_Ambient1 - Envelopes for Airports.lua
+
+**Requirements:** "ReaImGui: ReaScript binding for Dear ImGui extension" from the repository: https://github.com/ReaTeam/Extensions/raw/master/index.xml
+
+Brian Eno-inspired organic envelope modulation generator with 4 sophisticated algorithms and professional parameter control. Perfect for creating long-form ambient textures and evolving parameter automation.
+
+**Features:**
+- **4 Advanced Algorithms** - Fractal Curves, Sine Wave Interference, Generative Walk, L-Systems
+- **15 Algorithm Parameters** - 5 unique parameters per algorithm for maximum expressiveness
+- **XY Pad Control** - Intuitive corner-based mapping for Organic Character parameters
+- **Parameter Locking System** - Right-click any parameter to exclude from randomization
+- **Professional Integration** - REAPER envelope insertion with undo support
+- **Seeded Generation** - Reproducible patterns with manual seed control
+
+**Core Parameters:**
+- **Intensity** (0.0-1.0) - Overall modulation amplitude
+- **Center** (0.0-1.0) - Base value around which modulation occurs
+- **Organic Character XY Pad** - Corner-based control for Complexity, Flow, Randomness, Peak Irregularity
+
+**4 Algorithm Options:**
+
+**1. Fractal Curves** - Self-similar recursive noise patterns
+- Octaves, Persistence, Frequency Scale, Lacunarity, Amplitude Bias
+
+**2. Sine Wave Interference** - Multiple sine waves with controlled chaos
+- Wave Count, Frequency Spread, Amplitude Variation, Phase Drift, Beat Frequency
+
+**3. Generative Walk** - Rule-based segment movement with momentum
+- Segment Length, Smoothing Factor, Variation Scale, Momentum, Bias Direction
+
+**4. L-Systems** - Recursive string rewriting with organic growth patterns
+- Iterations, Branch Angle, Length Scale, Growth Rate, Complexity Factor, Max Change Rate, Tilt
+
+**XY Pad Corner Mapping:**
+- **Top-left**: Complexity + Flow (organic detail with smooth transitions)
+- **Top-right**: Randomness + Flow (chaotic with smooth blending)
+- **Bottom-left**: Complexity + Peak Irregularity (detailed with sharp events)
+- **Bottom-right**: Randomness + Peak Irregularity (chaotic with peak events)
+
+**Setup:**
+1. Install ReaImGui extension via ReaPack
+2. Install script via ReaPack or manual installation
+3. Load script: Actions → Show Action List → Load → select .lua file
+
+**Usage:**
+1. Select automation envelope in REAPER
+2. Set time selection (recommended: 15-60+ seconds for ambient evolution)
+3. Choose algorithm and adjust algorithm-specific parameters
+4. Use XY pad to control organic character blend
+5. Adjust core parameters (Intensity, Center)
+6. Script automatically applies modulation with permanent auto-apply
+
+**Parameter Management:**
+- **Randomise Seed** - Generate new random seed
+- **Randomise Parameters** - Randomize unlocked parameters only
+- **Randomise All** - Randomize both seed and unlocked parameters
+- **Reset** - Return all unlocked parameters to defaults
+- **Parameter Locking** - Right-click any slider to lock/unlock (orange = locked)
+
 ## 💬 Support
 
 For issues or feature requests: [joshadambell.com](https://joshadambell.com)

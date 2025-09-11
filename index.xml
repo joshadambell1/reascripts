@@ -96,6 +96,38 @@
         <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Envelope/joshadambell_Envelope%20LFO%20Tool.lua</source>
       </version>
     </reapack>
+    <reapack name="joshadambell_Ambient1 - Envelopes for Airports.lua" type="script" desc="joshadambell_Ambient1 - Envelopes for Airports">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Ambient1 - Envelopes for Airports\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Brian Eno-inspired organic envelope modulation generator with 4 sophisticated algorithms and professional parameter control. Perfect for creating long-form ambient textures and evolving parameter automation.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Features:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab 4 Advanced Algorithms: Fractal Curves, Sine Wave Interference, Generative Walk, L-Systems\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab 15 Algorithm Parameters: 5 unique parameters per algorithm for maximum expressiveness\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab XY Pad Control: Intuitive corner-based mapping for Organic Character parameters\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Parameter Locking System: Right-click any parameter to exclude from randomization\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Professional Integration: REAPER envelope insertion with undo support\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Seeded Generation: Reproducible patterns with manual seed control\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b XY Pad Corner Mapping:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Top-left: Complexity + Flow (organic detail with smooth transitions)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Top-right: Randomness + Flow (chaotic with smooth blending)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Bottom-left: Complexity + Peak Irregularity (detailed with sharp events)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Bottom-right: Randomness + Peak Irregularity (chaotic with peak events)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Usage:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Select automation envelope in REAPER\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Set time selection (recommended: 15-60+ seconds for ambient evolution)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Choose algorithm and adjust algorithm-specific parameters\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Use XY pad to control organic character blend\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Script automatically applies modulation with permanent auto-apply\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Requires:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 ReaImGui extension (available via ReaPack)\par}
+}]]></description>
+      </metadata>
+      <link rel="website">https://joshadambell.com</link>
+      <version name="1.0" author="joshadambell" time="2025-09-11T00:00:00Z">
+        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Envelope/joshadambell_Ambient1%20-%20Envelopes%20for%20Airports.lua</source>
+      </version>
+    </reapack>
   </category>
   <metadata>
     <link rel="website">https://joshadambell.com</link>
@@ -107,6 +139,7 @@
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Item & Track Renamer - Batch rename with GUI, find/replace, prefixes, numbering\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Media Explorer Spotting Scripts - Replace Soundminer's DSP Rack functionality\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Envelope LFO Tool - LFO Generator for Reaper Envelopes with interactive envelope editing\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Ambient1 - Envelopes for Airports - Brian Eno-inspired organic envelope modulation with 4 algorithms\par}
 }]]></description>
   </metadata>
 </index>
