@@ -2,6 +2,8 @@
 
 LFO generation tools for REAPER automation envelopes.
 
+![Envelope LFO Tool](https://github.com/user-attachments/assets/052ee15e-06b7-4017-950c-44fe6545937a) ![Ambient 1](https://github.com/user-attachments/assets/818eb061-c775-4f80-864f-5bfe271f5c38)
+
 ## 🛠️ Dependencies
 
 - **"ReaImGui: ReaScript binding for Dear ImGui extension"** from the repository: https://github.com/ReaTeam/Extensions/raw/master/index.xml
