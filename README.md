@@ -2,9 +2,6 @@
 
 Game Audio and Audio Post tools for REAPER.
 
-## 📝 KNOWN BUGS
-- Does not work with Volume envelopes. Works with everything else. Fix being worked on.
-
 ## 📦 Installation
 
 - Extensions → ReaPack → Import Repositories
