@@ -105,8 +105,29 @@ function main()
     reaper.SetMediaItemInfo_Value(item, "D_POSITION", cursor_pos)
     
     -- Set item length to full source length
-    local source_length = reaper.GetMediaSourceLength(source, false)
-    reaper.SetMediaItemInfo_Value(item, "D_LENGTH", source_length)
+    reaper.UpdateItemInProject(item)
+
+    local auto_length = reaper.GetMediaItemInfo_Value(item, "D_LENGTH")
+    if auto_length > 0 then
+    else
+        local retval, chunk = reaper.GetItemStateChunk(item, "", false)
+        if retval then
+            local file_path = chunk:match('FILE "([^"]+)"')
+            if file_path then
+                local temp_source = reaper.PCM_Source_CreateFromFile(file_path)
+                if temp_source then
+                    local success, length = pcall(reaper.GetMediaSourceLength, temp_source)
+                    if success and length > 0 then
+                        reaper.SetMediaItemInfo_Value(item, "D_LENGTH", length)
+                    else
+                        reaper.ShowMessageBox("Still cannot get source length", "Error", 0)
+                        return
+                    end
+                    reaper.PCM_Source_Destroy(temp_source)
+                end
+            end
+        end
+    end
     
     -- Set item name to just the filename (without path)
     local just_filename = filename:match("([^\\]+)$")
@@ -131,8 +152,22 @@ function main()
     end
     
     -- Get original source length for accurate percentage calculations
-    local original_source = reaper.PCM_Source_CreateFromFile(filename)
-    local full_source_length = reaper.GetMediaSourceLength(original_source, false)
+    local full_source_length
+    local temp_source = reaper.PCM_Source_CreateFromFile(filename)
+    if temp_source then
+        local success, length = pcall(reaper.GetMediaSourceLength, temp_source)
+        if not success or not length or length <= 0 then
+            reaper.ShowMessageBox("Could not get original source length for calculations", "Error", 0)
+            reaper.PCM_Source_Destroy(temp_source)
+            return
+        end
+        full_source_length = length
+        reaper.PCM_Source_Destroy(temp_source)
+    else
+        reaper.ShowMessageBox("Could not create temporary source for length calculation", "Error", 0)
+        return
+    end
+
     local rendered_take = reaper.GetActiveTake(item)
     
     -- Convert Media Explorer percentage-based selection to actual time values

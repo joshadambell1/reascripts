@@ -44,6 +44,10 @@ local MACRO = {
     min_value = 0.0,        -- Minimum clamp value
     max_value = 1.0,        -- Maximum clamp value
     
+    -- Fade parameters
+    fadeIn = 0.0,           -- Fade in percentage (0.0-1.0)
+    fadeOut = 0.0,          -- Fade out percentage (0.0-1.0)
+    
     -- Organic parameters (randomized on launch)
     complexity = 0.55,      -- Detail layers + amplitude drift over time
     flow = 1.5,             -- Transition smoothness and point-to-point blending (0.0-3.0)
@@ -852,7 +856,28 @@ function apply_macro_modulation()
     
     -- Insert points
     for _, point in ipairs(macro_points) do
-        local env_value = env_min + point.value * (env_max - env_min)
+        -- Calculate normalized time position (0.0 to 1.0) for fade calculations
+        local time_pos = (point.time - MACRO.timeStart) / duration
+        
+        -- Apply fade in/out modulation
+        local fade_multiplier = 1.0
+        
+        -- Fade in: 0.0 to 1.0 over first fadeIn percentage of duration
+        if MACRO.fadeIn > 0 and time_pos <= MACRO.fadeIn then
+            fade_multiplier = fade_multiplier * (time_pos / MACRO.fadeIn)
+        end
+        
+        -- Fade out: 1.0 to 0.0 over last fadeOut percentage of duration
+        if MACRO.fadeOut > 0 and time_pos >= (1.0 - MACRO.fadeOut) then
+            local fade_out_start = 1.0 - MACRO.fadeOut
+            local fade_progress = (time_pos - fade_out_start) / MACRO.fadeOut
+            fade_multiplier = fade_multiplier * (1.0 - fade_progress)
+        end
+        
+        -- Apply fade to the modulation intensity, not the center point
+        local faded_value = MACRO.center + (point.value - MACRO.center) * fade_multiplier
+        
+        local env_value = env_min + faded_value * (env_max - env_min)
         env_value = math.max(env_min, math.min(env_max, env_value))
         
         reaper.InsertEnvelopePoint(MACRO.targetEnv, point.time, env_value, point.shape, point.tension or 0, true, true)
@@ -880,6 +905,8 @@ function reset_macro_parameters()
     MACRO.smoothness = 200
     MACRO.min_value = 0.0
     MACRO.max_value = 1.0
+    MACRO.fadeIn = 0.0
+    MACRO.fadeOut = 0.0
     
     -- Reset organic parameters (skip locked ones)
     if not MACRO.locked.complexity then
@@ -1762,6 +1789,40 @@ function draw_parameters()
     
     ImGui.Separator(ctx)
     
+    -- Fade Settings
+    ImGui.Text(ctx, 'Fade')
+    
+    -- Use narrower width to ensure labels are visible
+    local fade_width = math.max(100, (content_width - 120) / 2)
+    
+    -- Fade In
+    ImGui.SetNextItemWidth(ctx, fade_width)
+    local fade_in_changed
+    local fade_in_percent = MACRO.fadeIn * 100
+    fade_in_changed, fade_in_percent = ImGui.SliderDouble(ctx, 'Fade In', fade_in_percent, 0.0, 100.0, '%.1f%%')
+    if fade_in_changed then
+        MACRO.fadeIn = fade_in_percent / 100.0
+        if MACRO.targetEnv and MACRO.timeEnd > MACRO.timeStart then
+            apply_macro_modulation()
+        end
+    end
+    
+    ImGui.SameLine(ctx)
+    
+    -- Fade Out (flipped values for visual intuition - drag right for more fade)
+    ImGui.SetNextItemWidth(ctx, fade_width)
+    local fade_out_changed
+    local fade_out_percent = MACRO.fadeOut * 100
+    fade_out_changed, fade_out_percent = ImGui.SliderDouble(ctx, 'Fade Out', fade_out_percent, 100.0, 0.0, '%.1f%%')
+    if fade_out_changed then
+        MACRO.fadeOut = fade_out_percent / 100.0
+        if MACRO.targetEnv and MACRO.timeEnd > MACRO.timeStart then
+            apply_macro_modulation()
+        end
+    end
+    
+    ImGui.Separator(ctx)
+    
     -- XY Pad underneath Range and Quality
     ImGui.Text(ctx, 'Organic Character')
     
@@ -2122,8 +2183,8 @@ end
 
 -- Main GUI loop
 function main_loop()
-    ImGui.SetNextWindowSize(ctx, 780, 950)
-    ImGui.SetNextWindowSizeConstraints(ctx, 780, 950, 780, 950) -- Fixed size, no resizing
+    ImGui.SetNextWindowSize(ctx, 780, 1010)
+    ImGui.SetNextWindowSizeConstraints(ctx, 780, 1010, 780, 1010) -- Fixed size, no resizing
     
     -- Eno Mode custom styling - only applied when toggled on
     local style_colors_pushed = 0
