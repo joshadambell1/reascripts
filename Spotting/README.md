@@ -32,8 +32,10 @@ Replaces Soundminer's "Spot through DSP Rack" functionality. Preview audio throu
 ## ✨ What it does
 
 - Bakes FX from preview track into final audio
-- Respects Media Explorer time selections  
+- Respects Media Explorer time selections
 - Keeps Media Explorer rate/pitch/volume settings
+- Preserves source file sample rate (requires SWS Extension)
+- Validates FX are active and render succeeded
 - Resets playback params after baking
 - Undoable
 

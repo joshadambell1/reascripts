@@ -1,30 +1,31 @@
 -- @description Spot Media Explorer Selection Through Selected Track and Bake FX into Item (bakes whole file)
--- @version 1.0
+-- @version 1.2
 -- @author joshadambell
 -- @links Website https://joshadambell.com
 -- @changelog
---   + First public release
+--   + Added validation warnings: SWS check, FX bypass check, render failure detection
 -- @about
 --   # Media Explorer Spotting Scripts
 --
---   Replaces Soundminer's "Spot through DSP Rack" functionality. 
+--   Replaces Soundminer's "Spot through DSP Rack" functionality.
 --   Preview audio through FX and spot processed files onto your timeline.
--- 
---   Takes the last played file from Media Explorer, processes it through FX on a preview track, 
+--
+--   Takes the last played file from Media Explorer, processes it through FX on a preview track,
 --   then places the final item on your selected track at the cursor.
 --
 --   Two versions available:
---   - "only bakes time selection" - Trims to Media Explorer selection first, then processes 
+--   - "only bakes time selection" - Trims to Media Explorer selection first, then processes
 --     (more efficient, bakes only the time selection from Media Explorer)
---   - "bakes whole file" - Processes entire file through FX, then trims to selection 
+--   - "bakes whole file" - Processes entire file through FX, then trims to selection
 --     (bakes full file for more flexibility later)
 --
 --   ## Setup
 --   1. Create track named "Media Explorer Preview"
 --   2. Add FX to that track
---   3. In Media Explorer Options, set playback to 
+--   3. In Media Explorer Options, set playback to
 --      "Play through first track named 'Media Explorer Preview' or first selected track"
 --   4. Install scripts: Actions → Show Action List → Load → select .lua files
+--   5. (Optional) Install SWS Extension for sample rate preservation
 --
 --   ## Usage
 --   1. Preview files in Media Explorer (plays through FX track)
@@ -35,17 +36,96 @@
 --
 --   ## What it does
 --   - Bakes FX from preview track into final audio
---   - Respects Media Explorer time selections  
+--   - Respects Media Explorer time selections
 --   - Keeps Media Explorer rate/pitch/volume settings
+--   - Preserves source file sample rate (with SWS)
+--   - Validates FX are active and render succeeded
 --   - Resets playback params after baking
 --   - Undoable
 --
 --   ## Issues
 --   - "Please select a track first" = select a track first
---   - "No file selected in Media Explorer" = preview a file first  
+--   - "No file selected in Media Explorer" = preview a file first
 --   - No FX processing = add FX to preview track
 
+-- Check if SWS extension is available
+function check_sws_available()
+    if not reaper.SNM_GetIntConfigVar then
+        local result = reaper.ShowMessageBox(
+            "SWS Extension not detected.\n\n" ..
+            "Sample rate preservation requires SWS Extension.\n" ..
+            "The script will continue but may not preserve the source file's sample rate.\n\n" ..
+            "Install SWS from: www.sws-extension.org\n\n" ..
+            "Continue anyway?",
+            "SWS Extension Not Found",
+            4  -- Yes/No buttons
+        )
+        return result == 6  -- 6 = Yes
+    end
+    return true
+end
+
+-- Check if preview track has active (non-bypassed) FX
+function check_preview_track_fx(preview_track)
+    local fx_count = reaper.TrackFX_GetCount(preview_track)
+
+    if fx_count == 0 then
+        local result = reaper.ShowMessageBox(
+            "Preview track has no FX loaded.\n\n" ..
+            "The spotted audio will be dry (no processing).\n\n" ..
+            "Continue anyway?",
+            "No FX Detected",
+            4  -- Yes/No buttons
+        )
+        return result == 6  -- 6 = Yes
+    end
+
+    local active_fx_count = 0
+    for i = 0, fx_count - 1 do
+        if reaper.TrackFX_GetEnabled(preview_track, i) then
+            active_fx_count = active_fx_count + 1
+        end
+    end
+
+    if active_fx_count == 0 then
+        local result = reaper.ShowMessageBox(
+            "All FX on preview track are bypassed.\n\n" ..
+            "The spotted audio will be dry (no processing).\n\n" ..
+            "Continue anyway?",
+            "All FX Bypassed",
+            4  -- Yes/No buttons
+        )
+        return result == 6  -- 6 = Yes
+    end
+
+    return true
+end
+
+-- Validate render succeeded by checking take count
+function validate_render(item, take_count_before)
+    reaper.UpdateArrange()
+    local take_count_after = reaper.CountTakes(item)
+
+    if take_count_after > take_count_before then
+        return true
+    else
+        reaper.ShowMessageBox(
+            "Render failed - no new take was created.\n\n" ..
+            "This may indicate a problem with the FX chain or REAPER's render system.\n" ..
+            "Script will abort.",
+            "Render Failed",
+            0  -- OK button
+        )
+        return false
+    end
+end
+
 function main()
+    -- Check if SWS extension is available
+    if not check_sws_available() then
+        return  -- User chose to cancel
+    end
+
     -- Get the currently selected track (destination for final item)
     local destination_track = reaper.GetSelectedTrack(0, 0)
     if not destination_track then
@@ -73,7 +153,12 @@ function main()
         preview_track = reaper.GetTrack(0, track_count)
         reaper.GetSetMediaTrackInfo_String(preview_track, "P_NAME", "Media Explorer Preview", true)
     end
-    
+
+    -- Check if preview track has active FX
+    if not check_preview_track_fx(preview_track) then
+        return  -- User chose to cancel
+    end
+
     -- Get media explorer last played file info using API documentation
     local retval, filename, filemode, selstart, selend, pitchshift, voladj, rateadj, sourcebpm, extrainfo = reaper.MediaExplorerGetLastPlayedFileInfo()
 
@@ -136,10 +221,44 @@ function main()
     -- Apply Media Explorer rate and volume settings BEFORE rendering FX
     reaper.SetMediaItemTakeInfo_Value(take, "D_PLAYRATE", rateadj)
     reaper.SetMediaItemTakeInfo_Value(take, "D_VOL", voladj)
-    
+
+    -- Preserve source sample rate during FX rendering
+    -- Get source file's sample rate
+    local take_source = reaper.GetMediaItemTake_Source(take)
+    local source_samplerate = reaper.GetMediaSourceSampleRate(take_source)
+
+    -- Store current project sample rate (only if SWS is available)
+    local original_project_sr = nil
+    if reaper.SNM_GetIntConfigVar then
+        original_project_sr = reaper.SNM_GetIntConfigVar("projsrate", 0)
+
+        -- Temporarily set project sample rate to match source file
+        if source_samplerate and source_samplerate > 0 then
+            reaper.SNM_SetIntConfigVar("projsrate", math.floor(source_samplerate))
+        end
+    end
+
+    -- Store take count before rendering for validation
+    local take_count_before = reaper.CountTakes(item)
+
     -- Select the item and render it through track/take FX (this bakes in the rate/volume)
     reaper.SetMediaItemSelected(item, true)
     reaper.Main_OnCommand(40209, 0) -- Item: Apply track/take FX to items
+
+    -- Validate render succeeded
+    if not validate_render(item, take_count_before) then
+        -- Restore project sample rate before aborting
+        if original_project_sr and original_project_sr > 0 then
+            reaper.SNM_SetIntConfigVar("projsrate", original_project_sr)
+        end
+        reaper.Undo_EndBlock("Spot Media Explorer selection (failed)", -1)
+        return
+    end
+
+    -- Restore original project sample rate (only if SWS is available)
+    if original_project_sr and original_project_sr > 0 then
+        reaper.SNM_SetIntConfigVar("projsrate", original_project_sr)
+    end
     
     -- Store original position for later restoration
     local original_position = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
