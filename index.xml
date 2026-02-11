@@ -77,6 +77,29 @@
         <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Renaming/joshadambell_Reaper%20Track%20and%20Item%20Renamer.lua</source>
       </version>
     </reapack>
+    <reapack name="joshadambell_Media File Find and Replace.lua" type="script" desc="joshadambell_Media File Find and Replace">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Media File Find & Replace\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Batch rename and manage media files in your project's media folder. Renames files on disk and updates all item references in the open project.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Features:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Find & replace text in filenames\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Prepend or append text to filenames\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Trim characters from start or end\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Live preview with click-to-exclude rows\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Updates item source references and take names\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Delete unreferenced media files from the media folder\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Auto-detects media folder location\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Requires:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 ReaImGui extension (available via ReaPack)\par}
+}]]></description>
+      </metadata>
+      <link rel="website">https://joshadambell.com</link>
+      <version name="1.0" author="joshadambell" time="2026-02-11T00:00:00Z">
+        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Renaming/joshadambell_Media%20File%20Find%20and%20Replace.lua</source>
+        <changelog><![CDATA[+ First public release]]></changelog>
+      </version>
+    </reapack>
   </category>
   <category name="Envelope">
     <reapack name="joshadambell_Envelope LFO Tool.lua" type="script" desc="joshadambell_Envelope LFO Tool">
@@ -150,6 +173,7 @@
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab SWS Extensions (https://www.sws-extension.org/)\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b Scripts included:\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Track & Item Renamer - Batch rename with GUI\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Media File Find & Replace - Batch rename media files on disk with reference updating\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Media Explorer Spotting - Preview through FX, place processed audio\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Envelope LFO Tool - Modern LFO generator with interactive editing\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Ambient1 - Organic modulation with 4 algorithms and XY pad\par}

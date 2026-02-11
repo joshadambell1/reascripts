@@ -18,8 +18,11 @@ Game Audio and Audio Post tools for REAPER.
 ### 📝 Track & Item Renamer
 Batch rename tracks and items with GUI interface. Find/replace, prefixes, suffixes, numbering with live preview.
 
-### 🎧 Media Explorer Spotting  
-Preview audio through FX and place processed versions on timeline. Two variants for different workflow needs.
+### 📁 Media File Find & Replace
+Batch rename media files on disk and update all project references. Find/replace, prepend, append, trim modes with live preview and click-to-exclude. Optionally updates item names to match. Also can remove unreferenced media from the media folder.
+
+### 🎧 Media Explorer Spotting
+Replicates Soundminer's "Spot through DSP Rack" workflow. Preview audio through FX and place processed versions on timeline. Two variants for different workflow needs.
 
 ### 🌊 Envelope LFO Tool
 Modern LFO generator with interactive envelope editors and 6 shapes. Power curve sliders and real-time parameter control.
