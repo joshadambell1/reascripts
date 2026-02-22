@@ -30,6 +30,9 @@ Modern LFO generator with interactive envelope editors and 6 shapes. Power curve
 ### 🌟 Ambient1 - Envelopes for Airports
 Organic modulation generator with 4 algorithms, XY pad control, and 22+ lockable parameters for macro-scale automation.
 
+### 🐕 Folder Track Amplitude Envelope Watchdog
+Generates amplitude-following automation items from folder track audio. Watchdog system auto-updates linked AIs when source material changes.
+
 ---
 
 **Detailed documentation available in each subfolder: `/Envelope`, `/Spotting`, `/Renaming`**

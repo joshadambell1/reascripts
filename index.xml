@@ -162,6 +162,27 @@
         <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Envelope/joshadambell_Ambient1%20-%20Envelopes%20for%20Airports.lua</source>
       </version>
     </reapack>
+    <reapack name="joshadambell_Folder Track Amplitude Envelope Watchdog.lua" type="script" desc="joshadambell_Folder Track Amplitude Envelope Watchdog">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs32 Folder Track Amplitude Envelope Watchdog\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Generates amplitude-following automation items from folder track audio. Includes a watchdog system that auto-updates linked AIs when source material changes.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Features:\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Analyzes audio from folder tracks (sums all child track audio)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Generates automation items on volume envelopes\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Links source track to destination AI with auto-update watchdog\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Links persist across project save/load\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Monitors child track volumes, item positions, fades, and mute states\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \b Requires:\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 REAPER v7.0+, ReaImGui extension (available via ReaPack)\par}
+}]]></description>
+      </metadata>
+      <link rel="website">https://joshadambell.com</link>
+      <version name="1.0" author="joshadambell" time="2026-02-11T00:00:00Z">
+        <source main="main">https://raw.githubusercontent.com/joshadambell1/reascripts/refs/heads/main/Envelope/joshadambell_Folder%20Track%20Amplitude%20Envelope%20Watchdog.lua</source>
+        <changelog><![CDATA[+ First public release]]></changelog>
+      </version>
+    </reapack>
   </category>
   <metadata>
     <link rel="website">https://joshadambell.com</link>
@@ -177,6 +198,7 @@
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Media Explorer Spotting - Preview through FX, place processed audio\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Envelope LFO Tool - Modern LFO generator with interactive editing\par}
 {\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Ambient1 - Organic modulation with 4 algorithms and XY pad\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Folder Track Amplitude Envelope Watchdog - Amplitude-following AIs with auto-update\par}
 }]]></description>
   </metadata>
 </index>

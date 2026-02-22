@@ -122,6 +122,43 @@ Interactive 280×280px pad with corner-based parameter mapping:
 6. Fine-tune with core parameters (Intensity, Center, Range)
 7. Script auto-applies modulation with undo support
 
+## 🐕 Folder Track Amplitude Envelope Watchdog
+
+### joshadambell_Folder Track Amplitude Envelope Watchdog.lua
+
+**Generates amplitude-following automation items from folder track audio.** Includes a watchdog system that auto-updates linked AIs when source material changes — monitors child track volumes, item positions, fades, and mute states.
+
+**Features:**
+- **Folder Track Analysis** - Sums audio from all child tracks within a folder
+- **Automation Item Generation** - Creates/updates AIs on volume envelopes from analyzed audio
+- **Watchdog Link** - Links a source track to a destination AI for automatic updates
+- **Persistent Links** - Link data saved with the project, restored on reload
+- **Debounced Updates** - 1.5s debounce prevents thrashing during rapid edits
+- **Configurable Analysis** - Window size, precision/overlap, gain scaling, invert
+
+**Settings:**
+- **Window Size** - RMS analysis window (0.001-0.4s)
+- **Precision** - Window overlap multiplier (1-16x)
+- **Gain** - Output gain scaling (0-200%)
+- **Invert** - Flip the envelope
+- **Deduplicate Points** - Remove redundant same-value points
+- **Silence at Edges** - Force silence at AI boundaries
+- **Interpolation** - Linear, Square, Slow start/end, Bezier
+- **Time Offset** - Shift points forward/back
+
+**Setup:**
+1. Install ReaImGui extension via ReaPack
+2. Install script via ReaPack or manual installation
+3. Load script: Actions → Show Action List → Load → select .lua file
+
+**Usage:**
+1. Select a folder track containing audio on child tracks
+2. Set time selection for the analysis range
+3. Click "Generate from Selection" to create an automation item on the source track
+4. Move the generated automation item to the destination track's volume envelope
+5. Select the source track, set time selection, click on the destination AI, then press "Link Source → Dest AI"
+6. Watchdog monitors source for changes and auto-updates the linked AI
+
 ## 💬 Support
 
 For issues or feature requests: [joshadambell.com](https://joshadambell.com)
