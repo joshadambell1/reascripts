@@ -44,3 +44,6 @@ Generates amplitude-following automation items from folder track audio. Watchdog
 ![Envelope LFO Tool](https://github.com/user-attachments/assets/fdb34fbc-e8a6-4fe6-990f-633a619d86cb)
 
 <img width="700" height="506" alt="image" src="https://github.com/user-attachments/assets/1f14b175-04d0-4395-a12a-0887770c61ff" />
+
+<img width="1224" height="873" alt="image" src="https://github.com/user-attachments/assets/a3972199-d567-4850-87c9-de35e3214d8e" />
+

@@ -72,6 +72,8 @@ Result: `SONG_Guitar_01`, `SONG_Bass_02`
 
 Batch rename media files on disk in your project's media folder. Renames files, updates all item source references and take names in the open project.
 
+<img width="1224" height="873" alt="image" src="https://github.com/user-attachments/assets/c55da9cd-57e4-40f9-8323-3ab3d36d650a" />
+
 ### 🚀 Usage
 
 1. Open your REAPER project
